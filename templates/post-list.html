@@ -1,0 +1,13 @@
+<table>
+  $for(posts)$
+  <tr>
+    <td><a href="$url$" title="$description$">$title$</a></td>
+    <td>$date$</td>
+    <td>
+      $if(tags)$
+        $tags$
+      $endif$
+    </td>
+  </tr>
+  $endfor$
+</table>

@@ -8,3 +8,4 @@ install:
 
 script:
   - cabal configure && cabal build && cabal install
+  - blog build

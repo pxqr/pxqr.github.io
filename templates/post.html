@@ -1,0 +1,43 @@
+<article>
+  <h1>$title$</h1>
+  <header>
+    Posted on $date$
+    $if(author)$
+    by $author$
+    $endif$
+    |
+    <a href="https://github.com/pxqr/blog/blob/master$url$">
+      Source
+    </a>
+
+    $if(tags)$
+    $tag$
+    $endif$
+  </header>
+
+  <div class="post-body">
+    <link rel="stylesheet" type="text/css"
+          href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css"/>
+    $body$
+  </div>
+
+  <footer>
+    <ul>
+      $if(prev)$
+      <li>
+        <a href="/posts/$prev$.html" title="Go to previous linked post">← Previous</a>
+      </li>
+      $endif$
+
+      <li>
+        <a rel="directory" href="/archive.html" title="Go to Archive">Back</a>
+      </li>
+
+      $if(next)$
+      <li>
+        <a href="/posts/$next$.html" title="Go to next linked post">Next →</a>
+      </li>
+      $endif$
+    </ul>
+  </footer>
+</article>

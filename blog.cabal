@@ -14,6 +14,16 @@ cabal-version:         >= 1.8
 extra-source-files:
   README.md
 
+  index.html
+  about.html
+  images/.keep
+  posts/.keep
+  templates/archive.html
+  templates/default.html
+  templates/post-list.html
+  templates/post.html
+
+
 source-repository head
   type:                git
   location:            git://github.com/blog.git

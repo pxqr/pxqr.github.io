@@ -1,2 +1,4 @@
 *.org
 dist
+_cache
+_site
