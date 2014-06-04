@@ -4,7 +4,7 @@ synopsis:              pxqr's blog
 homepage:              https://github.com/pxqr/blog
 bug-reports:           https://github.com/pxqr/blog/issues
 license:               BSD3
-license-file:          LICENSE
+license-file:          src/LICENSE
 author:                Sam Truzjan
 maintainer:            pxqr.sta@gmail.com
 category:              Web
