@@ -1,8 +1,8 @@
 name:                  blog
 version:               0.1.0.0
 synopsis:              pxqr's blog
-homepage:              https://pxqr.github.io/
-bug-reports:          https://github.com/pxqr/pxqr.github.io/issues
+homepage:              https://github.com/pxqr/blog
+bug-reports:           https://github.com/pxqr/blog/issues
 license:               BSD3
 license-file:          LICENSE
 author:                Sam Truzjan
@@ -13,7 +13,7 @@ cabal-version:         >= 1.8
 
 source-repository head
   type:                git
-  location:            git://github.com/pxqr/pxqr.github.io.git
+  location:            git://github.com/blog.git
   branch:              master
 
 executable blog
