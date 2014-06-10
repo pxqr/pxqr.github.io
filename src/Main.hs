@@ -64,6 +64,26 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateCompiler
 
+    create ["atom.xml"] $ do
+        route idRoute
+        compile $ do
+          posts <- fmap (take 10) . recentFirst =<< loadAll "posts/*"
+          renderAtom feedConfiguration postCtx posts
+
+author, email, root :: String
+author = "Sam Truzjan"
+email  = "pxqr.sta@gmail.com"
+root   = "https://pxqr.github.io"
+
+feedConfiguration :: FeedConfiguration
+feedConfiguration = FeedConfiguration
+  { feedTitle       = "pxqr's blog"
+  , feedDescription = "TODO"
+  , feedAuthorName  = author
+  , feedAuthorEmail = email
+  , feedRoot        = root
+  }
+
 postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" `mappend`
