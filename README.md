@@ -1,4 +1,5 @@
-Sources for pxqr's blog.
+Sources for pxqr's blog. Rendered HTML version is available at
+https://github.com/pxqr/pxqr.github.io
 
 Prerequisites:
 
