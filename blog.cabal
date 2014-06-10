@@ -13,7 +13,9 @@ cabal-version:         >= 1.8
 
 extra-source-files:
   README.md
+  src/LICENSE
 
+  css/default.scss
   index.html
   about.html
   images/.keep
