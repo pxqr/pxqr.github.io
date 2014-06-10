@@ -1,9 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 import           Data.Monoid (mappend)
-import           Hakyll
+import           Hakyll as H
 
 main :: IO ()
 main = hakyll $ do
+    match (H.fromList ["humans.txt", "robots.txt"]) $ do
+        route   idRoute
+        compile copyFileCompiler
+
     match "images/*" $ do
         route   idRoute
         compile copyFileCompiler
