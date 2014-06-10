@@ -1,0 +1,103 @@
+$primary:    #222;
+$secondary:  #555;
+$decoration: #aaa;
+$background: #f7f7f7;
+$link:       #33d;
+$visited:    #d33;
+
+body {
+    width: 600px;
+    margin: 0px auto;
+    padding: 0;
+
+    color: $primary;
+
+    > nav {
+        padding: 0 0 0em 0;
+        border-bottom: $decoration solid 1px;
+
+        ul {
+            list-style-type: none;
+            text-transform: uppercase;
+            text-align: right;
+
+            li {
+                display: inline;
+
+                a {
+                    margin-left: 12px;
+                    color: $secondary;
+                    font-weight: bold;
+                    font-size: 1.2em;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    > footer {
+        padding: 0.5em 1em;
+        border-top: $decoration solid 1px;
+        font-size: 0.8em;
+        text-align: right;
+        color: $secondary;
+
+        a {
+            color: $primary;
+        }
+    }
+}
+
+section {
+    margin: 1em 0;
+
+    a {
+        color: $link;
+    }
+
+    a:visited {
+        color: $visited;
+    }
+}
+
+article {
+    header {
+        color: $secondary;
+    }
+
+    img {
+        margin: 1em;
+        padding: 2px;
+        border: $decoration solid 1px;
+    }
+
+    footer {
+        border-top: $decoration solid 1px;
+        border-bottom: $decoration solid 1px;
+        background-color: $background;
+
+        ul {
+            list-style-type: none;
+
+            li {
+                display: table-cell;
+
+                a {
+                    color: $secondary;
+                }
+            }
+        }
+
+    }
+}
+
+/*
+pre.sourceCode {
+    margin: 1em;
+    padding: 1em;
+
+    background-color: $background;
+    border: $decoration solid 1px;
+    border-radius: 3px;
+}
+*/

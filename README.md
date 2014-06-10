@@ -1,10 +1,16 @@
 Sources for pxqr's blog.
 
+Prerequisites:
+
+    * install haskell platform
+
+    * install ruby
+
+    * install sass gem
+
 For development use run:
 
-```
-cabal install && blog watch && xdg-open http://localhost:8000
-```
+    cabal install && blog watch && xdg-open http://localhost:8000
 
 To add a post:
 
