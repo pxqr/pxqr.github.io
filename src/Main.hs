@@ -1,12 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
+import           Data.Monoid (mappend, (<>))
 import           Hakyll as H
 
 main :: IO ()
 main = hakyll $ do
     match (H.fromList ["humans.txt", "robots.txt"]) $ do
         route   idRoute
-        compile copyFileCompiler
+        compile $ getResourceBody >>= applyAsTemplate defContext
 
     match "favicon.ico" $ do
         route   idRoute
@@ -68,6 +68,14 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateCompiler
 
+    match "sitemap.xml" $ do
+        route   idRoute
+        compile $ do
+            posts <- loadAll "posts/*"
+            let sitemapCtx = listField "posts" postCtx (return posts) <>
+                             defContext
+            getResourceBody >>= applyAsTemplate sitemapCtx
+
     create ["atom.xml"] $ do
         route idRoute
         compile $ do
@@ -79,6 +87,7 @@ author = "Sam Truzjan"
 email  = "pxqr.sta@gmail.com"
 root   = "https://pxqr.github.io"
 
+
 feedConfiguration :: FeedConfiguration
 feedConfiguration = FeedConfiguration
   { feedTitle       = "pxqr's blog"
@@ -88,7 +97,13 @@ feedConfiguration = FeedConfiguration
   , feedRoot        = root
   }
 
+defContext :: Context String
+defContext =
+    constField "root"   root `mappend`
+    defaultContext
+
 postCtx :: Context String
 postCtx =
-    dateField "date" "%B %e, %Y" `mappend`
-    defaultContext
+    dateField "date"     "%B %e, %Y" `mappend`
+    dateField "datetime" "%Y-%m-%d"  `mappend` -- used by sitemap template
+    defContext
