@@ -17,7 +17,7 @@ extra-source-files:
 
   css/default.scss
   index.html
-  about.html
+  about.md
   images/.keep
   posts/.keep
   templates/archive.html
