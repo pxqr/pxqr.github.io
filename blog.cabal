@@ -15,6 +15,16 @@ extra-source-files:
   README.md
   src/LICENSE
 
+  favicon.ico
+  favigen/README.md
+  favigen/grid.hs
+  favigen/lambda.hs
+  favigen/mkicon.sh
+
+  humans.txt
+  robots.txt
+  sitemap.xml
+
   css/default.scss
   index.html
   about.md
