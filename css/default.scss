@@ -65,6 +65,24 @@ article {
         color: $secondary;
     }
 
+    aside nav#toc {
+        margin: 1em;
+        padding: 1em;
+
+        border: $decoration solid 1px;
+        background-color: $background;
+        float: right;
+
+        p {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+    }
+
     img {
         margin: 1em;
         padding: 2px;

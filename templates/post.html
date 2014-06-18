@@ -15,6 +15,21 @@
     $endif$
   </header>
 
+  $if(toc)$
+  <aside>
+    <nav id="toc">
+      <p>Contents</p>
+      <ul>
+        $for(headings)$
+        <li>
+          <a href="#$fragment$">$caption$</a>
+        </li>
+        $endfor$
+      </ul>
+    </nav>
+  </aside>
+  $endif$
+
   <div class="post-body">
     <link rel="stylesheet" type="text/css"
           href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css"/>

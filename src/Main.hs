@@ -1,5 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
+import           Data.Char
+import           Data.List as L
 import           Data.Monoid (mappend, (<>))
+import           Text.Pandoc.Definition
+import           Text.Pandoc.Walk
 import           Hakyll as H
 
 main :: IO ()
@@ -97,6 +101,28 @@ feedConfiguration = FeedConfiguration
   , feedRoot        = root
   }
 
+headings :: Pandoc -> [String]
+headings = query extractHeader
+  where
+    extractHeader (Header _ _ inlines) = [unwords $ query extractStr inlines]
+    extractHeader _                    = []
+
+    extractStr    (Str    str        ) = [str]
+    extractStr    _                    = []
+
+headingsField :: Context String
+headingsField = listField "headings" headingField getHeadings
+  where
+    headingField =
+        field "caption"  (return . itemBody) `mappend`
+        field "fragment" (return . hToId . itemBody)
+      where
+        hToId = intercalate "-" . words . L.map toLower
+
+    getHeadings = do
+      body <- getResourceBody
+      mapM makeItem $ headings $ itemBody $ readPandoc body
+
 defContext :: Context String
 defContext =
     constField "root"   root `mappend`
@@ -106,4 +132,5 @@ postCtx :: Context String
 postCtx =
     dateField "date"     "%B %e, %Y" `mappend`
     dateField "datetime" "%Y-%m-%d"  `mappend` -- used by sitemap template
+    headingsField                    `mappend`
     defContext
