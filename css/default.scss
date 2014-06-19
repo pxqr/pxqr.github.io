@@ -83,6 +83,17 @@ article {
         }
     }
 
+    section {
+        > p {
+            text-indent: 1.5em;
+            margin-bottom: 0;
+        }
+
+        > p + p {
+            margin-top: 0em;
+        }
+    }
+
     img {
         margin: 1em;
         padding: 2px;
