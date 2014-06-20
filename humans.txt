@@ -1,0 +1,15 @@
+/* TEAM */
+
+Author:      Sam Truzjan
+Contact:     pxqr .dot. sta @at@ gmail .dot. com
+Site:        pxqr.info
+Twitter:     @pxqrd
+From:        Russia
+
+/* SITE */
+
+Language:    English
+Standards:   HTML5, CSS3, Atom
+Components:  MathJax
+Software:    GHC, Cabal, Pandoc, SASS, Hakyll
+IDE:         Emacs
