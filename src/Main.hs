@@ -36,11 +36,13 @@ main = hakyll $ do
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
+    tags <- buildTags "posts/*" (fromCapture "tags/*.html")
+
     match "posts/*" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= loadAndApplyTemplate "templates/post.html"    (postCtx tags)
+            >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
             >>= relativizeUrls
 
     create ["archive.html"] $ do
@@ -48,8 +50,8 @@ main = hakyll $ do
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
             let archiveCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    constField "title" "Archives"            `mappend`
+                    listField "posts" (postCtx tags) (return posts) `mappend`
+                    constField "title" "Archives"                   `mappend`
                     defaultContext
 
             makeItem ""
@@ -62,7 +64,7 @@ main = hakyll $ do
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
             let indexCtx =
-                    listField "posts" postCtx (return posts) `mappend`
+                    listField "posts" (postCtx tags) (return posts) `mappend`
                     defaultContext
 
             getResourceBody
@@ -76,7 +78,7 @@ main = hakyll $ do
         route   idRoute
         compile $ do
             posts <- loadAll "posts/*"
-            let sitemapCtx = listField "posts" postCtx (return posts) <>
+            let sitemapCtx = listField "posts" (postCtx tags) (return posts) <>
                              defContext
             getResourceBody >>= applyAsTemplate sitemapCtx
 
@@ -84,7 +86,7 @@ main = hakyll $ do
         route idRoute
         compile $ do
           posts <- fmap (take 10) . recentFirst =<< loadAll "posts/*"
-          renderAtom feedConfiguration postCtx posts
+          renderAtom feedConfiguration (postCtx tags) posts
 
 author, email, root :: String
 author = "Sam Truzjan"
@@ -128,9 +130,10 @@ defContext =
     constField "root"   root `mappend`
     defaultContext
 
-postCtx :: Context String
-postCtx =
+postCtx :: Tags -> Context String
+postCtx tags =
     dateField "date"     "%B %e, %Y" `mappend`
     dateField "datetime" "%Y-%m-%d"  `mappend` -- used by sitemap template
+    tagsField "taglist"  tags        `mappend`
     headingsField                    `mappend`
     defContext
