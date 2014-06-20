@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 import           Data.Char
 import           Data.List as L
-import           Data.Monoid (mappend, (<>))
+import           Data.Monoid
 import           Text.Pandoc.Definition
 import           Text.Pandoc.Walk
 import           Hakyll as H
@@ -49,16 +49,9 @@ main = hakyll $ do
         route idRoute
         compile $ do
             posts <- recentFirst =<< loadAll pattern
-            let title   = "Posts tagged with " ++ tag
-            let tagsCtx =
-                    listField "posts" (postCtx tags) (return posts) `mappend`
-                    constField "title" title                        `mappend`
-                    constField "topic" tag                          `mappend`
-                    defaultContext
-
             makeItem ""
-              >>= loadAndApplyTemplate "templates/tags.html"    tagsCtx
-              >>= loadAndApplyTemplate "templates/default.html" tagsCtx
+              >>= loadAndApplyTemplate "templates/tags.html"    (tagsCtx posts tag tags)
+              >>= loadAndApplyTemplate "templates/default.html" (tagsCtx posts tag tags)
               >>= relativizeUrls
 
     create ["archive.html"] $ do
@@ -153,3 +146,27 @@ postCtx tags =
     tagsField "taglist"  tags        `mappend`
     headingsField                    `mappend`
     defContext
+
+relatedCtx :: String -> Tags -> Context String
+relatedCtx tag tags
+  | L.null related = mempty
+  | otherwise      = mconcat
+  [ listField  "related" (field "tag" (return . itemBody)) (mapM makeItem related)
+  , constField "related-count" (show (L.length related))
+  ]
+  where
+    -- FIX: O(tag_count * tag_count * post_count)
+    -- may take a long time in the future
+    related = L.map fst $ L.filter isRelated $ tagsMap tags
+    isRelated (oTag, oPosts)
+        = oTag /= tag && not (L.null (L.intersect oPosts posts))
+      where
+        Just posts = L.lookup tag $ tagsMap tags
+
+tagsCtx :: [Item String] -> String -> Tags -> Context String
+tagsCtx posts tag tags =
+    constField "title"   ("Posts tagged with " ++ tag)     `mappend`
+    constField "topic"    tag                              `mappend`
+    listField  "posts"   (postCtx tags)  (return posts)    `mappend`
+    relatedCtx tag tags                                    `mappend`
+    defaultContext

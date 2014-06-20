@@ -1,3 +1,10 @@
 Posts tagged with <a href="#">$topic$</a>:
 
 $partial("templates/post-list.html")$
+
+$if(related)$
+Related tags ($related-count$):
+$for(related)$
+  <a href="$tag$.html">$tag$</a>
+$endfor$
+$endif$
