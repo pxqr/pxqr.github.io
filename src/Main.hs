@@ -45,6 +45,22 @@ main = hakyll $ do
             >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
             >>= relativizeUrls
 
+    tagsRules tags $ \ tag pattern -> do
+        route idRoute
+        compile $ do
+            posts <- recentFirst =<< loadAll pattern
+            let title   = "Posts tagged with " ++ tag
+            let tagsCtx =
+                    listField "posts" (postCtx tags) (return posts) `mappend`
+                    constField "title" title                        `mappend`
+                    constField "topic" tag                          `mappend`
+                    defaultContext
+
+            makeItem ""
+              >>= loadAndApplyTemplate "templates/tags.html"    tagsCtx
+              >>= loadAndApplyTemplate "templates/default.html" tagsCtx
+              >>= relativizeUrls
+
     create ["archive.html"] $ do
         route idRoute
         compile $ do
