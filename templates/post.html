@@ -1,18 +1,22 @@
 <article>
   <h1>$title$</h1>
   <header>
-    Posted on $date$
+    [ Posted on $date$
     $if(author)$
     by $author$
     $endif$
-    |
+    ]
+
+    [
     <a href="https://bitbucket.org/pxqr/blog/raw/master$url$">
       Source
     </a>
+    ]
 
     $if(tags)$
-    Tagged with:
+    [ Tagged with:
     $taglist$
+    ]
     $endif$
   </header>
 
