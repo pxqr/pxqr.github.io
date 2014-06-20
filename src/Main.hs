@@ -2,6 +2,9 @@
 import           Data.Char
 import           Data.List as L
 import           Data.Monoid
+import           Text.Blaze.Html                 (toHtml, toValue, (!))
+import qualified Text.Blaze.Html5                as H
+import qualified Text.Blaze.Html5.Attributes     as A
 import           Text.Pandoc.Definition
 import           Text.Pandoc.Walk
 import           Hakyll as H
@@ -139,11 +142,25 @@ defContext =
     constField "root"   root `mappend`
     defaultContext
 
+prettyTagsField :: String -> Tags -> Context String
+prettyTagsField name tags
+    = tagsFieldWith getTags renderLink (mconcat . intersperse ",") name tags
+  where
+    renderLink :: String -> (Maybe FilePath) -> Maybe H.Html
+    renderLink tag Nothing         = Just $ H.a $ toHtml tag
+    renderLink tag (Just filePath) = Just $
+        H.a ! A.href (toValue $ toUrl filePath) ! A.title (toValue linkTitle) $ toHtml tag
+      where
+        linkTitle = show postCount ++ " post" ++ suff ++ " tagged with " ++ tag
+          where
+            suff = if postCount == 1 then "" else "s"
+        Just postCount = fmap L.length $ L.lookup tag $ tagsMap tags
+
 postCtx :: Tags -> Context String
 postCtx tags =
     dateField "date"     "%B %e, %Y" `mappend`
     dateField "datetime" "%Y-%m-%d"  `mappend` -- used by sitemap template
-    tagsField "taglist"  tags        `mappend`
+    prettyTagsField "taglist" tags   `mappend`
     headingsField                    `mappend`
     defContext
 

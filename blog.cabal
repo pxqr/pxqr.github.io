@@ -46,5 +46,6 @@ executable blog
   main-is:             Main.hs
   ghc-options:         -Wall
   build-depends:       base       == 4.6.*
+                     , blaze-html
                      , pandoc-types
                      , hakyll
