@@ -1,11 +1,35 @@
 language: haskell
+branches:
+  only:
+    - source
 
 ghc:
   - 7.6
 
+env:
+  global:
+    secure: ckqqllg7rXLOGKa3lqk3FqrEpSPbyYRrbtQUMAKgj1ZU1IJ7k6RXwZfcIzBbu8Iqv4F0rRSB1oPxzond2R4N0XjLjEmZZtCEDctXX7vm+BB7CZLWGEYYGLwVz7dAs9027IEc4KIVt7EVOpSocuTOMZq81hO7IWJTP0UwanINaxM=
+
 install:
+  - sudo apt-get install rubygems && gem install sass
   - cabal install --only-dependencies
+  - cabal configure && cabal build && cabal install
+
+before_script:
+  - cd _site
+  - git checkout master
+  - git pull origin master
+  - cd ..
 
 script:
-  - cabal configure && cabal build && cabal install
   - blog build
+
+after_script:
+  - cd _site
+  - git status
+  - git add --all
+  - git config --global user.email "pxqr.sta@gmail.com"
+  - git config --global user.name "Travis"
+  - git commit -m "deploy snapshot $(date '+%m/%d/%y %H:%M')"
+  - git push "$REPO_URL" master &> /dev/null || echo push failed
+  - cd ..
