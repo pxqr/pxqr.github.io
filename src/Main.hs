@@ -142,6 +142,11 @@ defContext =
     constField "root"   root `mappend`
     defaultContext
 
+formatField :: String -> Context String
+formatField name = field name (return . fileFormat)
+  where
+    fileFormat = show . fileType . toFilePath . itemIdentifier
+
 prettyTagsField :: String -> Tags -> Context String
 prettyTagsField name tags
     = tagsFieldWith getTags renderLink (mconcat . intersperse ",") name tags
@@ -158,6 +163,7 @@ prettyTagsField name tags
 
 postCtx :: Tags -> Context String
 postCtx tags =
+    formatField "format"             `mappend`
     dateField "date"     "%B %e, %Y" `mappend`
     dateField "datetime" "%Y-%m-%d"  `mappend` -- used by sitemap template
     prettyTagsField "taglist" tags   `mappend`
