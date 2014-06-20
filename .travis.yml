@@ -24,7 +24,7 @@ before_script:
 script:
   - blog build
 
-after_script:
+after_success:
   - cd _site
   - git status
   - git add --all
