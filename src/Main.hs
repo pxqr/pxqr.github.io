@@ -6,6 +6,7 @@ import           Text.Blaze.Html                 (toHtml, toValue, (!))
 import qualified Text.Blaze.Html5                as H
 import qualified Text.Blaze.Html5.Attributes     as A
 import           Text.Pandoc.Definition
+import           Text.Pandoc.Options
 import           Text.Pandoc.Walk
 import           Hakyll as H
 
@@ -35,7 +36,7 @@ main = hakyll $ do
 
     match "about.md" $ do
         route   $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ pandocCompilerWith readerOptions writerOptions
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
@@ -43,7 +44,7 @@ main = hakyll $ do
 
     match "posts/*" $ do
         route   $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ pandocCompilerWith readerOptions writerOptions
             >>= loadAndApplyTemplate "templates/post.html"    (postCtx tags)
             >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
             >>= relativizeUrls
@@ -100,11 +101,18 @@ main = hakyll $ do
           posts <- fmap (take 10) . recentFirst =<< loadAll "posts/*"
           renderAtom feedConfiguration (postCtx tags) posts
 
+readerOptions :: ReaderOptions
+readerOptions = defaultHakyllReaderOptions
+  { readerSmart = True
+  }
+
+writerOptions :: WriterOptions
+writerOptions = defaultHakyllWriterOptions
+
 author, email, root :: String
 author = "Sam Truzjan"
 email  = "pxqr.sta@gmail.com"
 root   = "https://pxqr.github.io"
-
 
 feedConfiguration :: FeedConfiguration
 feedConfiguration = FeedConfiguration
