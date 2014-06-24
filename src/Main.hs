@@ -157,7 +157,7 @@ formatField name = field name (return . fileFormat)
 
 prettyTagsField :: String -> Tags -> Context String
 prettyTagsField name tags
-    = tagsFieldWith getTags renderLink (mconcat . intersperse ",") name tags
+    = tagsFieldWith getTags renderLink (mconcat . intersperse ", ") name tags
   where
     renderLink :: String -> (Maybe FilePath) -> Maybe H.Html
     renderLink tag Nothing         = Just $ H.a $ toHtml tag
