@@ -4,3 +4,4 @@ _cache
 css/.sass-cache
 drafts
 pushall.sh
+css/default.css
