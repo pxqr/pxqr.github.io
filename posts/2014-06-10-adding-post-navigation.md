@@ -126,7 +126,7 @@ $endif$
 
 Notice that for every `$headings$` item the `$fragment$` and
 `$caption$` fields lives in the different scopes. Thus, Hakyll
-contexts have tree-like structure. For instance a bit simplified
+contexts have tree-like structure. For instance (a bit simplified)
 context of this document will be:
 
 * postCtx
