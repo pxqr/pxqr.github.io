@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    
+    <meta name="keywords" content="blog, programming">
+    <meta name="generator" content="Hakyll">
+    
+    <meta name="description" content="How to generate table of contents for Hakyll blog posts.">
+    
+
+    <title>Adding Table Of Contents - pxqr's blog</title>
+
+    <link rel="icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../css/default.css">
+    <link rel="alternate" href="../atom.xml" type="application/atom+xml" title="Feed of all posts">
+    <link rel="author" href="../humans.txt">
+
+    
+
+    
+  </head>
+
+  <body>
+    <header></header>
+    <nav class="global">
+      <ul>
+        <li><a href="../">Home</a></li>
+        <li><a href="../archive.html" title="List of all blog posts">Archive/</a></li>
+        <li><a href="../about.html" title="About this site">About</a></li>
+      </ul>
+    </nav>
+
+    <section id="content">
+      <article>
+  <h1>Adding Table Of Contents</h1>
+  <header>
+    [ Posted on June 10, 2014
+    
+    ]
+
+    [
+    <a href="https://bitbucket.org/pxqr/blog/raw/master/posts/2014-06-10-adding-post-navigation.html" title="Source code for this post in Markdown format">
+      Source
+    </a>
+    ]
+
+    
+    [ Tagged with:
+    <a href="../tags/hakyll.html" title="1 post tagged with hakyll">hakyll</a>, <a href="../tags/pandoc.html" title="1 post tagged with pandoc">pandoc</a>
+    ]
+    
+  </header>
+
+  
+  <aside>
+    <nav id="toc">
+      <p>Contents</p>
+      <ul>
+        
+        <li>
+          <a href="#extracting-headings">Extracting headings</a>
+        </li>
+        
+        <li>
+          <a href="#composing-context">Composing context</a>
+        </li>
+        
+        <li>
+          <a href="#html-rendering">HTML rendering</a>
+        </li>
+        
+        <li>
+          <a href="#basic-styling">Basic styling</a>
+        </li>
+        
+        <li>
+          <a href="#further-reading">Further reading</a>
+        </li>
+        
+      </ul>
+    </nav>
+  </aside>
+  
+
+  <section>
+    <link rel="stylesheet" type="text/css" href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css" />
+    <p>Sometimes blog posts might grow so they won’t fit in two or more screen pages. A good practice is to break post or article into parts using paragraphs and headings. Hovewer, it is often vital to get page overview before starting reading. The most straightforward and natural way to generate table of contents is to list blog post headings in original order. If hyperlinked, table of contents can be used for navigation within a post scope.</p>
+<h2 id="extracting-headings">Extracting headings</h2>
+<p>Although pandoc already have an option for table of contents generation we will not use it. For educational purposes we will do it manually. Internally, pandoc have generic representation for every format of document it can parse or render. Not suprisingly, it’s called <a href="http://hackage.haskell.org/package/pandoc-types-1.12.3.3/docs/Text-Pandoc-Definition.html#t:Pandoc">Pandoc</a>. Our first task is to extract list of headings from the <code>Pandoc</code> datatype. For this purpose pandoc provides <a href="http://hackage.haskell.org/package/pandoc-types-1.12.3.3/docs/Text-Pandoc-Walk.html">Text.Pandoc.Walk</a> module; more specifically, it export the very useful <code>query</code> function simplifying document tree traversal.</p>
+<p>The following new function goes to <code>site.hs</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Text.Pandoc</span>
+<span class="kw">import </span><span class="dt">Text.Pandoc.Walk</span> (query)
+
+<span class="ot">headings ::</span> <span class="dt">Pandoc</span> <span class="ot">-&gt;</span> [<span class="dt">String</span>]
+headings <span class="fu">=</span> query extractHeader
+  <span class="kw">where</span>
+    extractHeader (<span class="dt">Header</span> _ _ inlines) <span class="fu">=</span> [unwords <span class="fu">$</span> query extractStr inlines]
+    extractHeader _                    <span class="fu">=</span> []
+
+    extractStr    (<span class="dt">Str</span>    str        ) <span class="fu">=</span> [str]
+    extractStr    _                    <span class="fu">=</span> []</code></pre>
+<p>Core pandoc types are located into <code>pandoc-types</code> package, so you might need to add this package to <code>build-depends</code>.</p>
+<h2 id="composing-context">Composing context</h2>
+<p>To render extracted headings we need to fill in template context. Hakyll has <a href="http://jaspervdj.be/hakyll/reference/Hakyll-Web-Template-Context.html">Context</a> machinery for this. Any Hakyll context is consisting of a set of fields and there are a lot of different kinds of fields. We will need just this two:</p>
+<ul>
+<li><p>the two string <code>field</code>s containing heading string and heading id attribute;</p></li>
+<li><p>the <code>listField</code> is used to keep a list of previous (heading and its id) two fields.</p></li>
+</ul>
+<p>Again, we’ll add the following field “description” to the <code>site.hs</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Char</span> (toLower)
+<span class="kw">import </span><span class="dt">Data.List</span> <span class="kw">as</span> <span class="dt">L</span>
+
+<span class="ot">headingsField ::</span> <span class="dt">Context</span> <span class="dt">String</span>
+headingsField <span class="fu">=</span> listField <span class="st">&quot;headings&quot;</span> headingField getHeadings
+  <span class="kw">where</span>
+    headingField <span class="fu">=</span>
+        field <span class="st">&quot;caption&quot;</span>  (return <span class="fu">.</span> itemBody) <span class="ot">`mappend`</span>
+        field <span class="st">&quot;fragment&quot;</span> (return <span class="fu">.</span> hToId <span class="fu">.</span> itemBody)
+      <span class="kw">where</span>
+        hToId <span class="fu">=</span> intercalate <span class="st">&quot;-&quot;</span> <span class="fu">.</span> words <span class="fu">.</span> L.map toLower
+
+    getHeadings <span class="fu">=</span> <span class="kw">do</span>
+      body <span class="ot">&lt;-</span> getResourceBody
+      mapM makeItem <span class="fu">$</span> headings <span class="fu">$</span> itemBody <span class="fu">$</span> readPandoc body</code></pre>
+<p>Scaffold generated <code>site.hs</code> module have <code>postCtx</code> context. To be able to query the <code>headingsField</code> from <code>post.html</code> template we must include it in the <code>postCtx</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span>
+postCtx <span class="fu">=</span>
+    dateField <span class="st">&quot;date&quot;</span>     <span class="st">&quot;%B %e, %Y&quot;</span> <span class="ot">`mappend`</span>
+    headingsField                    <span class="ot">`mappend`</span> <span class="co">-- for TOC rendering</span>
+    defaultContext</code></pre>
+<h2 id="html-rendering">HTML rendering</h2>
+<p>Now we should generate an HTML chunk representing table of contents. It should be included in post if only “toc” field is present, so we use pandoc’s <code>$if$</code> conditional. Pandoc <a href="http://johnmacfarlane.net/pandoc/README.html#templates">template</a> system also have <code>$for$</code> operator which is used to generate list of table entries.</p>
+<p>The following goes to <code>/templates/post.html</code>.</p>
+<pre class="sourceCode html"><code class="sourceCode html">$if(toc)$
+<span class="kw">&lt;aside&gt;</span>
+  <span class="kw">&lt;nav</span><span class="ot"> id=</span><span class="st">&quot;toc&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;p&gt;</span>Contents<span class="kw">&lt;/p&gt;</span>
+    <span class="kw">&lt;ul&gt;</span>
+      $for(headings)$
+      <span class="kw">&lt;li&gt;</span>
+        <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#$fragment$&quot;</span><span class="kw">&gt;</span>$caption$<span class="kw">&lt;/a&gt;</span>
+      <span class="kw">&lt;/li&gt;</span>
+      $endfor$
+    <span class="kw">&lt;/ul&gt;</span>
+  <span class="kw">&lt;/nav&gt;</span>
+<span class="kw">&lt;aside&gt;</span>
+$endif$</code></pre>
+<p>Notice that for every <code>$headings$</code> item the <code>$fragment$</code> and <code>$caption$</code> fields lives in the different scopes. Thus, Hakyll contexts have tree-like structure. For instance (a bit simplified) context of this document will be:</p>
+<ul>
+<li>postCtx
+<ul>
+<li>title: Adding Table Of Contents</li>
+<li>description: ….</li>
+<li>toc: on</li>
+<li>headings
+<ul>
+<li>heading1
+<ul>
+<li>caption: Extracting headings</li>
+<li>fragment: extracting-headings</li>
+</ul></li>
+<li>heading2
+<ul>
+<li>caption: Composing context</li>
+<li>fragment: composing-context</li>
+</ul></li>
+<li>etc…</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="basic-styling">Basic styling</h2>
+<p>Both <a href="http://en.wikipedia.org/wiki/ICC_profile#toc">wikipedia</a> and <a href="http://hackage.haskell.org/package/async/docs/Control-Concurrent-Async.html#table-of-contents">haddock documentation tool</a> provides an example of how table of contents might look like. But let’s go towards simplicity – formatting and nothing else. The quick &amp; dirty <a href="http://sass-lang.com/guide">SASS</a> snippet from <code>css/default.scss</code> will do:</p>
+<pre class="sourceCode css"><code class="sourceCode css">aside nav<span class="fl">#toc</span> <span class="kw">{</span>
+    <span class="kw">margin:</span> <span class="dt">1em</span><span class="kw">;</span>
+    <span class="kw">padding:</span> <span class="dt">1em</span><span class="kw">;</span>
+
+    <span class="kw">border:</span> $decoration <span class="dt">solid</span> <span class="dt">1px</span><span class="kw">;</span>
+    <span class="kw">background-color:</span> $background<span class="kw">;</span>
+    <span class="kw">float:</span> <span class="dt">right</span><span class="kw">;</span>
+
+    <span class="er">p</span> <span class="er">{</span>
+        <span class="kw">text-align:</span> <span class="dt">center</span><span class="kw">;</span>
+    <span class="kw">}</span>
+
+    ul <span class="kw">{</span>
+        <span class="kw">list-style-type:</span> <span class="dt">none</span><span class="kw">;</span>
+        <span class="kw">padding-left:</span> <span class="dt">0</span><span class="kw">;</span>
+    <span class="kw">}</span>
+}</code></pre>
+<p>Hakyll’s scaffolded site does not include SASS preprocessing, but <a href="http://jaspervdj.be/hakyll/reference/Hakyll-Core-UnixFilter.html">Hakyll.Core.UnixFilter</a> provide a <a href="http://jaspervdj.be/hakyll/reference/Hakyll-Core-Compiler.html">Compiler</a> capable to filter files using an external process.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><p><a href="http://johnmacfarlane.net/pandoc/README.html">Pandoc User’s Guide</a></p></li>
+<li><p><a href="http://hackage.haskell.org/package/pandoc">Pandoc Reference Documentation</a></p></li>
+<li><p><a href="http://jaspervdj.be/hakyll/">Hakyll Home Page</a></p></li>
+<li><p><a href="http://jaspervdj.be/hakyll/reference/index.html">Hakyll Reference Documentation</a></p></li>
+</ul>
+  </div>
+
+  <footer>
+    <ul>
+      
+
+      <li>
+        <a rel="directory" href="../archive.html" title="Go to Archive">Back</a>
+      </li>
+
+      
+    </ul>
+  </footer>
+
+  
+</article>
+
+    </section>
+
+    <footer class="global">
+      ... generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+      using
+      <a href="http://johnmacfarlane.net/pandoc">Pandoc</a>.
+      Source is available at
+      <a href="https://bitbucket.org/pxqr/blog">Bitbucket</a>
+      hosted by
+      <a href="https://github.com/pxqr/pxqr.github.io/">GitHub</a>
+      under
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+        CC BY 4.0
+      </a>
+    </footer>
+  </body>
+</html>

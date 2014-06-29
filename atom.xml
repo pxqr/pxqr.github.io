@@ -8,6 +8,14 @@
         <name>Sam Truzjan</name>
         <email>pxqr.sta@gmail.com</email>
     </author>
-    <updated>Unknown</updated>
-    
+    <updated>2014-06-10T00:00:00Z</updated>
+    <entry>
+    <title>Adding Table Of Contents</title>
+    <link href="https://pxqr.github.io/posts/2014-06-10-adding-post-navigation.html" />
+    <id>https://pxqr.github.io/posts/2014-06-10-adding-post-navigation.html</id>
+    <published>2014-06-10T00:00:00Z</published>
+    <updated>2014-06-10T00:00:00Z</updated>
+    <summary type="html"><![CDATA[How to generate table of contents for Hakyll blog posts.]]></summary>
+</entry>
+
 </feed>
