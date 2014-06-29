@@ -5,7 +5,7 @@ Prerequisites:
 
     * install haskell platform
 
-    * install ruby
+    * install ruby and rubygems
 
     * install sass gem
 
@@ -19,4 +19,4 @@ To add a post:
 
     * optionally add `posts/$FULL_TITLE` to the cabal file;
 
-    * run `./deploy` script. (TODO how to deploy?)
+    * run `./deploy.sh` script.
