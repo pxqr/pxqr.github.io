@@ -61,6 +61,16 @@ section {
     }
 }
 
+table.posts {
+    table-layout: fixed;
+    width: 100%;
+    margin: 1em 0;
+
+    tr:hover {
+        background-color: $background;
+    }
+}
+
 article {
     header {
         color: $secondary;
