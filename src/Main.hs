@@ -112,7 +112,7 @@ writerOptions = defaultHakyllWriterOptions
 author, email, root :: String
 author = "Sam Truzjan"
 email  = "pxqr.sta@gmail.com"
-root   = "http://pxqr.github.io"
+root   = "http://pxqr.info"
 
 feedConfiguration :: FeedConfiguration
 feedConfiguration = FeedConfiguration
