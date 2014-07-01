@@ -84,10 +84,6 @@
           <a href="#basic-styling">Basic styling</a>
         </li>
         
-        <li>
-          <a href="#further-reading">Further reading</a>
-        </li>
-        
       </ul>
     </nav>
   </aside>
@@ -97,7 +93,7 @@
     <link rel="stylesheet" type="text/css" href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css" />
     <p>Sometimes blog posts might grow so they won’t fit in two or more screen pages. A good practice is to break post or article into parts using paragraphs and headings. Hovewer, it is often vital to get page overview before starting reading. The most straightforward and natural way to generate table of contents is to list blog post headings in original order. If hyperlinked, table of contents can be used for navigation within a post scope.</p>
 <h2 id="extracting-headings">Extracting headings</h2>
-<p>Although pandoc already have an option for table of contents generation we will not use it. For educational purposes we will do it manually. Internally, pandoc have generic representation for every format of document it can parse or render. Not suprisingly, it’s called <a href="http://hackage.haskell.org/package/pandoc-types-1.12.3.3/docs/Text-Pandoc-Definition.html#t:Pandoc">Pandoc</a>. Our first task is to extract list of headings from the <code>Pandoc</code> datatype. For this purpose pandoc provides <a href="http://hackage.haskell.org/package/pandoc-types-1.12.3.3/docs/Text-Pandoc-Walk.html">Text.Pandoc.Walk</a> module; more specifically, it export the very useful <code>query</code> function simplifying document tree traversal.</p>
+<p>Although <a href="http://johnmacfarlane.net/pandoc/README.html">pandoc</a> already have an option for table of contents generation we will not use it. For educational purposes we will do it manually. Internally, pandoc have generic representation for every format of document it can parse or render. Not suprisingly, it’s called <a href="http://hackage.haskell.org/package/pandoc-types-1.12.3.3/docs/Text-Pandoc-Definition.html#t:Pandoc">Pandoc</a>. Our first task is to extract list of headings from the <code>Pandoc</code> datatype. For this purpose pandoc provides <a href="http://hackage.haskell.org/package/pandoc-types-1.12.3.3/docs/Text-Pandoc-Walk.html">Text.Pandoc.Walk</a> module; more specifically, it export the very useful <code>query</code> function simplifying document tree traversal.</p>
 <p>The following new function goes to <code>site.hs</code>:</p>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Text.Pandoc</span>
 <span class="kw">import </span><span class="dt">Text.Pandoc.Walk</span> (query)
@@ -112,7 +108,7 @@ headings <span class="fu">=</span> query extractHeader
     extractStr    _                    <span class="fu">=</span> []</code></pre>
 <p>Core pandoc types are located into <code>pandoc-types</code> package, so you might need to add this package to <code>build-depends</code>.</p>
 <h2 id="composing-context">Composing context</h2>
-<p>To render extracted headings we need to fill in template context. Hakyll has <a href="http://jaspervdj.be/hakyll/reference/Hakyll-Web-Template-Context.html">Context</a> machinery for this. Any Hakyll context is consisting of a set of fields and there are a lot of different kinds of fields. We will need just this two:</p>
+<p>To render extracted headings we need to fill in template context. <a href="http://jaspervdj.be/hakyll/">Hakyll</a> has <a href="http://jaspervdj.be/hakyll/reference/Hakyll-Web-Template-Context.html">Context</a> machinery for this. Any Hakyll context is consisting of a set of fields and there are a lot of different kinds of fields. We will need just this two:</p>
 <ul>
 <li><p>the two string <code>field</code>s containing heading string and heading id attribute;</p></li>
 <li><p>the <code>listField</code> is used to keep a list of previous (heading and its id) two fields.</p></li>
@@ -199,13 +195,19 @@ $endif$</code></pre>
     <span class="kw">}</span>
 }</code></pre>
 <p>Hakyll’s scaffolded site does not include SASS preprocessing, but <a href="http://jaspervdj.be/hakyll/reference/Hakyll-Core-UnixFilter.html">Hakyll.Core.UnixFilter</a> provide a <a href="http://jaspervdj.be/hakyll/reference/Hakyll-Core-Compiler.html">Compiler</a> capable to filter files using an external process.</p>
-<h2 id="further-reading">Further reading</h2>
-<ul>
-<li><p><a href="http://johnmacfarlane.net/pandoc/README.html">Pandoc User’s Guide</a></p></li>
-<li><p><a href="http://hackage.haskell.org/package/pandoc">Pandoc Reference Documentation</a></p></li>
-<li><p><a href="http://jaspervdj.be/hakyll/">Hakyll Home Page</a></p></li>
-<li><p><a href="http://jaspervdj.be/hakyll/reference/index.html">Hakyll Reference Documentation</a></p></li>
-</ul>
+  </section>
+
+  <section>
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'pxqr';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
   </section>
 
   <footer>
