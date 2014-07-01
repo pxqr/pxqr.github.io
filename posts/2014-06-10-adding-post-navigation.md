@@ -16,12 +16,13 @@ navigation within a post scope.
 Extracting headings
 ------
 
-Although pandoc already have an option for table of contents
-generation we will not use it. For educational purposes we will do it
-manually. Internally, pandoc have generic representation for every
-format of document it can parse or render. Not suprisingly, it's
-called [Pandoc][pandoc-type]. Our first task is to extract list of
-headings from the `Pandoc` datatype. For this purpose pandoc provides
+Although [pandoc](http://johnmacfarlane.net/pandoc/README.html)
+already have an option for table of contents generation we will not
+use it. For educational purposes we will do it manually. Internally,
+pandoc have generic representation for every format of document it can
+parse or render. Not suprisingly, it's called
+[Pandoc][pandoc-type]. Our first task is to extract list of headings
+from the `Pandoc` datatype. For this purpose pandoc provides
 [Text.Pandoc.Walk][text-pandoc-walk] module; more specifically, it
 export the very useful `query` function simplifying document tree
 traversal.
@@ -52,9 +53,10 @@ Composing context
 -------
 
 To render extracted headings we need to fill in template
-context. Hakyll has [Context][hakyll-context] machinery for this. Any
-Hakyll context is consisting of a set of fields and there are a lot of
-different kinds of fields. We will need just this two:
+context. [Hakyll](http://jaspervdj.be/hakyll/) has
+[Context][hakyll-context] machinery for this. Any Hakyll context is
+consisting of a set of fields and there are a lot of different kinds
+of fields. We will need just this two:
 
 * the two string `field`s containing heading string and heading id
   attribute;
@@ -183,14 +185,3 @@ process.
 [hakyll-compiler]: http://jaspervdj.be/hakyll/reference/Hakyll-Core-Compiler.html
 [haddock-toc]: http://hackage.haskell.org/package/async/docs/Control-Concurrent-Async.html#table-of-contents
 [wiki-toc]: http://en.wikipedia.org/wiki/ICC_profile#toc
-
-Further reading
---------------
-
-* [Pandoc User's Guide](http://johnmacfarlane.net/pandoc/README.html)
-
-* [Pandoc Reference Documentation](http://hackage.haskell.org/package/pandoc)
-
-* [Hakyll Home Page](http://jaspervdj.be/hakyll/)
-
-* [Hakyll Reference Documentation](http://jaspervdj.be/hakyll/reference/index.html)
