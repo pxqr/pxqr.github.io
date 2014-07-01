@@ -1,4 +1,3 @@
-*.org
 dist
 _cache
 css/.sass-cache
