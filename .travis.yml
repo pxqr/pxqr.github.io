@@ -12,7 +12,7 @@ env:
 
 install:
   - sudo apt-get install rubygems && gem install sass
-  - cabal install --only-dependencies
+  - cabal install --only-dependencies --max-backjumps=-1
   - cabal configure && cabal build && cabal install
 
 before_script:
