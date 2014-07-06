@@ -34,6 +34,10 @@ main = hakyll $ do
               >>= withItemBody (unixFilter "sass" ["-s", "--scss"])
               >>= return . fmap compressCss
 
+    match "404.html" $ do
+        route   idRoute
+        compile $ getResourceBody >>= applyAsTemplate defContext
+
     match "about.md" $ do
         route   $ setExtension "html"
         compile $ pandocCompilerWith readerOptions writerOptions
