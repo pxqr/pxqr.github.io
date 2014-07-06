@@ -117,7 +117,7 @@ root   = "http://pxqr.info"
 feedConfiguration :: FeedConfiguration
 feedConfiguration = FeedConfiguration
   { feedTitle       = "pxqr's blog"
-  , feedDescription = "TODO"
+  , feedDescription = "Recent posts feed"
   , feedAuthorName  = author
   , feedAuthorEmail = email
   , feedRoot        = root
