@@ -12,7 +12,7 @@ import           Hakyll as H
 
 main :: IO ()
 main = hakyll $ do
-    match (H.fromList ["humans.txt", "robots.txt"]) $ do
+    match (H.fromList ["humans.txt", "robots.txt", "opensearch.xml"]) $ do
         route   idRoute
         compile $ getResourceBody >>= applyAsTemplate defContext
 
