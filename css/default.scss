@@ -1,3 +1,44 @@
+/* responsiveness */
+
+img {
+    max-width: 100%;
+    height: auto;
+    width: auto\9;
+}
+
+@media screen and (min-width: 600px) {
+    body {
+        width: 600px;
+    }
+
+    .hidden-phone {}
+    .visible-desktop {}
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        width: 95%;
+    }
+
+    .hidden-phone {}
+    .visible-desktop {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        width: 95%;
+    }
+
+    .hidden-phone,
+    .visible-desktop {
+        display: none !important;
+    }
+}
+
+/* primary styles */
+
 $primary:    #222;
 $secondary:  #555;
 $decoration: #aaa;
@@ -24,7 +65,6 @@ img.banner {
 }
 
 body {
-    width: 600px;
     margin: 0px auto;
     padding: 0;
 
@@ -98,6 +138,10 @@ table.posts {
 article {
     header {
         color: $secondary;
+
+        span {
+            white-space: nowrap;
+        }
     }
 
     aside nav#toc {

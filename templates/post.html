@@ -1,32 +1,40 @@
 <article>
   <h1>$title$</h1>
   <header>
+    <span>
     [ Posted on $date$
     $if(author)$
     by $author$
     $endif$
     ]
+    </span>
 
+    <span class="hidden-phone">
     [
     <a href="https://github.com/pxqr/pxqr.github.io/blob/source/$path$"
        title="Source code for this post in $format$ format">
       Source
     </a>
     ]
+    </span>
 
     $if(tags)$
+    <span>
     [ Tagged with:
     $taglist$
     ]
+    </span>
     $endif$
 
     $if(readingtime)$
-    [ <span title="estimated reading time">$readingtime$ min</span> ]
+    <span>
+    [ est. reading time: $readingtime$ min</span> ]
+    </span>
     $endif$
   </header>
 
   $if(toc)$
-  <aside>
+  <aside class="visible-desktop">
     <nav id="toc">
       <p>Contents</p>
       <ul>
