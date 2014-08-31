@@ -61,6 +61,10 @@
     <a href="../tags/hakyll.html" title="1 post tagged with hakyll">hakyll</a>, <a href="../tags/pandoc.html" title="1 post tagged with pandoc">pandoc</a>
     ]
     
+
+    
+    [ <span title="estimated reading time">4 min</span> ]
+    
   </header>
 
   
@@ -107,7 +111,7 @@ headings <span class="fu">=</span> query extractHeader
 
     extractStr    (<span class="dt">Str</span>    str        ) <span class="fu">=</span> [str]
     extractStr    _                    <span class="fu">=</span> []</code></pre>
-<p>Core pandoc types are located into <code>pandoc-types</code> package, so you might need to add this package to <code>build-depends</code>.</p>
+<p>Core pandoc types are located into <code>pandoc-types</code> package, so you might need to add this package to <code>build-depends</code> cabal field.</p>
 <h2 id="composing-context">Composing context</h2>
 <p>To render extracted headings we need to fill in template context. <a href="http://jaspervdj.be/hakyll/">Hakyll</a> has <a href="http://jaspervdj.be/hakyll/reference/Hakyll-Web-Template-Context.html">Context</a> machinery for this. Any Hakyll context is consisting of a set of fields and there are a lot of different kinds of fields. We will need just this two:</p>
 <ul>
