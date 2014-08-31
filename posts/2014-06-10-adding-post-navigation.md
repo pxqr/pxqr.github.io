@@ -44,7 +44,7 @@ headings = query extractHeader
 ```
 
 Core pandoc types are located into `pandoc-types` package, so you
-might need to add this package to `build-depends`.
+might need to add this package to `build-depends` cabal field.
 
 [text-pandoc-walk]: http://hackage.haskell.org/package/pandoc-types-1.12.3.3/docs/Text-Pandoc-Walk.html
 [pandoc-type]: http://hackage.haskell.org/package/pandoc-types-1.12.3.3/docs/Text-Pandoc-Definition.html#t:Pandoc
