@@ -173,12 +173,25 @@ prettyTagsField name tags
             suff = if postCount == 1 then "" else "s"
         Just postCount = fmap L.length $ L.lookup tag $ tagsMap tags
 
+-- | Average number of words the expected reader can read for a minute.
+wordsPerMinute :: Int
+wordsPerMinute = 250
+
+readingTimeField :: String -> Context String
+readingTimeField name = field name (return . readingTime)
+  where
+    readingTime = ppTime . L.length . words . itemBody
+    ppTime secs = show (ceiling
+                        (fromIntegral secs / fromIntegral wordsPerMinute :: Double)
+                        :: Integer)
+
 postCtx :: Tags -> Context String
 postCtx tags =
     formatField "format"             `mappend`
     dateField "date"     "%B %e, %Y" `mappend`
     dateField "datetime" "%Y-%m-%d"  `mappend` -- used by sitemap template
     prettyTagsField "taglist" tags   `mappend`
+    readingTimeField "readingtime"   `mappend`
     headingsField                    `mappend`
     defContext
 
