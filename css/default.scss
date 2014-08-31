@@ -126,12 +126,17 @@ section {
 }
 
 table.posts {
-    table-layout: fixed;
     width: 100%;
     margin: 1em 0;
 
     tr:hover {
         background-color: $background;
+    }
+
+    tr {
+        td:last-child {
+            white-space:nowrap;
+        }
     }
 }
 
