@@ -1,6 +1,6 @@
 /* responsiveness */
 
-img {
+img.banner {
     max-width: 100%;
     height: auto;
     width: auto\9;
@@ -189,10 +189,23 @@ article {
         }
     }
 
-    img {
-        margin: 1em;
+    div.figure {
+        display: table;
+        width: 1%;
+
+        margin: 0 auto;
         padding: 2px;
         border: $decoration solid 1px;
+        background-color: $background;
+
+
+        img {
+        }
+
+        p {
+            text-align: center;
+            margin: 2px;
+        }
     }
 
     footer {
