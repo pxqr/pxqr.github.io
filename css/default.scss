@@ -147,6 +147,10 @@ article {
         span {
             white-space: nowrap;
         }
+
+        span:last-child {
+            float: right;
+        }
     }
 
     aside nav#toc {
@@ -192,22 +196,27 @@ article {
     }
 
     footer {
-        border-top: $decoration solid 1px;
-        border-bottom: $decoration solid 1px;
-        background-color: $background;
+        span:last-child {
+            float: right;
+        }
+    }
+}
 
-        ul {
-            list-style-type: none;
+#pagination {
+    border-top: $decoration solid 1px;
+    border-bottom: $decoration solid 1px;
+    background-color: $background;
 
-            li {
-                display: table-cell;
+    ul {
+        list-style-type: none;
 
-                a {
-                    color: $secondary;
-                }
+        li {
+            display: table-cell;
+
+            a {
+                color: $secondary;
             }
         }
-
     }
 }
 

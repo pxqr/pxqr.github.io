@@ -2,35 +2,18 @@
   <h1>$title$</h1>
   <header>
     <span>
-    [ Posted on $date$
+    $date$
     $if(author)$
     by $author$
     $endif$
-    ]
     </span>
 
-    <span class="hidden-phone">
-    [
-    <a href="https://github.com/pxqr/pxqr.github.io/blob/source/$path$"
-       title="Source code for this post in $format$ format">
-      Source
-    </a>
-    ]
-    </span>
 
-    $if(tags)$
     <span>
-    [ Tagged with:
-    $taglist$
-    ]
-    </span>
-    $endif$
-
     $if(readingtime)$
-    <span>
-    [ est. reading time: $readingtime$ min</span> ]
-    </span>
+      est. reading time: $readingtime$ min
     $endif$
+    </span>
   </header>
 
   $if(toc)$
@@ -54,7 +37,29 @@
     $body$
   </section>
 
-  <section>
+  <footer>
+    <span>
+    $if(tags)$
+      <i class="fa fa-tags"></i> $taglist$
+    $endif$
+    </span>
+
+
+    <span class="hidden-phone">
+      <i class="fa fa-file-code-o"></i>
+      <a href="https://github.com/pxqr/pxqr.github.io/blob/source/$path$"
+         title="Source code for this post in $format$ format">Source</a>
+    </span>
+  </footer>
+
+  $if(mathjax)$
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+  $endif$
+</article>
+<footer>
+  <section id="comments">
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         var disqus_shortname = 'pxqr';
@@ -67,7 +72,7 @@
     <noscript>Please enable JavaScript to view the comments</noscript>
   </section>
 
-  <footer>
+  <section id="pagination">
     <ul>
       $if(prev)$
       <li>
@@ -86,10 +91,4 @@
       $endif$
     </ul>
   </footer>
-
-  $if(mathjax)$
-  <script type="text/javascript"
-          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-  </script>
-  $endif$
-</article>
+</footer>
