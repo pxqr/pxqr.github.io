@@ -11,6 +11,10 @@ img.banner {
         width: 600px;
     }
 
+    .figure img {
+        max-width: 580px;
+    }
+
     .hidden-phone {}
     .visible-desktop {}
 }
@@ -18,6 +22,10 @@ img.banner {
 @media screen and (max-width: 600px) {
     body {
         width: 95%;
+    }
+
+    .figure img {
+        max-width: 460px;
     }
 
     .hidden-phone {}
@@ -29,6 +37,10 @@ img.banner {
 @media screen and (max-width: 480px) {
     body {
         width: 95%;
+    }
+
+    .figure img {
+        max-width: 320px;
     }
 
     .hidden-phone,
@@ -197,10 +209,6 @@ article {
         padding: 2px;
         border: $decoration solid 1px;
         background-color: $background;
-
-
-        img {
-        }
 
         p {
             text-align: center;
