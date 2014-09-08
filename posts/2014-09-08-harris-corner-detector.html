@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    
+    <meta name="keywords" content="blog, programming">
+    <meta name="generator" content="Hakyll">
+    
+    <meta name="description" content="Implementation of the harris corner detection algorithm using Haskell.">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Harris corner detector - pxqr's blog</title>
+
+    <link rel="search" type="application/opensearchdescription+xml" href="../opensearch.xml" title="pxqr's blog">
+    <link rel="icon" href="../favicon.ico">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/default.css">
+    <link rel="alternate" href="../atom.xml" type="application/atom+xml" title="Feed of all posts">
+    <link rel="author" href="../humans.txt">
+    <link rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+
+    
+
+    
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-52438115-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+
+  <body>
+    <header></header>
+    <nav class="global">
+      <ul>
+        <li><a href="../" title="Starting page">Home</a></li>
+        <li><a href="../archive.html" title="List of all blog posts">Archive/</a></li>
+        <li><a href="../about.html" title="About this site">About</a></li>
+        <li>
+          <a href="../atom.xml" title="Subscribe to new posts">
+            <span class="fa fa-rss fa-lg"></span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <section id="content">
+      <article>
+  <h1>Harris corner detector</h1>
+  <header>
+    <span>
+    September  8, 2014
+    
+    </span>
+
+
+    <span>
+    
+      est. reading time: 9 min
+    
+    </span>
+  </header>
+
+  
+
+  <section>
+    <link rel="stylesheet" type="text/css" href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css" />
+    <p><strong>TODO</strong> SSD &amp; interest point</p>
+<div class="figure">
+<img src="../images/harris-orig.bmp" alt="Original image of some Paris building." /><p class="caption">Original image of some Paris building.</p>
+</div>
+<p>SSD(corner metric):</p>
+<p>\[ E(u, v) = \sum_{x, y} w(x, y) (I(x + u, y + v) - I(x, y))^2 \]</p>
+<p>Taylor expansion:</p>
+<p>\[ I(x + u, y + v) = I(x, y) + u I_x(x, y) + v I_y(x, y) \]</p>
+<p>Substitution and cancelling:</p>
+<p>\[ E(u, v) = \sum_{x, y} w(x, y) (u I_x(x, y) + v I_y(x, y))^2 \]</p>
+<p>Decompose dot product:</p>
+<p><br /><span class="math">$$ E(u, v) = \\sum_{x, y} w(x, y)
+   (\begin{bmatrix}u &amp; v\end{bmatrix} \begin{bmatrix}I_x(x, y) \\ I_y(x, y)\end{bmatrix})^2
+$$</span><br /></p>
+<p>Expand square and omit parens(associativity of product):</p>
+<p><br /><span class="math">$$ E(u, v) = \\sum_{x, y} w(x, y)
+   \begin{bmatrix}u &amp; v\end{bmatrix} \begin{bmatrix}I_x(x, y) \\ I_y(x, y)\end{bmatrix}
+   \begin{bmatrix}u &amp; v\end{bmatrix} \begin{bmatrix}I_x(x, y) \\ I_y(x, y)\end{bmatrix}
+$$</span><br /></p>
+<p>The “transpose of product” rule:</p>
+<p><br /><span class="math">$$ E(u, v) = \\sum_{x, y} w(x, y)
+   \begin{bmatrix}u &amp; v\end{bmatrix} \begin{bmatrix}I_x(x, y) \\ I_y(x, y)\end{bmatrix}
+   \begin{bmatrix}I_x(x, y) &amp;&amp; I_y(x, y)\end{bmatrix}\begin{bmatrix}u \\ v\end{bmatrix}
+$$</span><br /></p>
+<p>Find product:</p>
+<p><br /><span class="math">$$ E(u, v) = \\sum_{x, y} w(x, y)
+   \begin{bmatrix}u &amp; v\end{bmatrix}
+   \begin{bmatrix}I_x(x, y) I_x(x, y) &amp;&amp; I_x(x, y) I_y(x, y) \\ I_y(x, y) I_x(x, y) &amp;&amp; I_y(x, y) I_y(x, y)\end{bmatrix}
+   \begin{bmatrix}u \\ v\end{bmatrix}
+$$</span><br /></p>
+<p>Float in sum (uv vector does not depend on sum) and give a name for the covariance matrix:</p>
+<p><br /><span class="math">$$ E(u, v) = \begin{bmatrix}u &amp; v\end{bmatrix} M \begin{bmatrix}u \\ v\end{bmatrix} $$</span><br /></p>
+<p><br /><span class="math">$$ M = \\sum_{x, y} w(x, y) \begin{bmatrix}I_x(x, y) I_x(x, y) &amp;&amp; I_x(x, y) I_y(x, y) \\ I_y(x, y) I_x(x, y) &amp;&amp; I_y(x, y) I_y(x, y)\end{bmatrix} $$</span><br /></p>
+<p><strong>TODO</strong></p>
+<ul>
+<li>both \lambda_1 and \lambda_2 are small – flat region;</li>
+<li>$\lambda_1 &gt;&gt; \lambda_2 $or \lambda_1 &gt;&gt; \lambda_2 – edge region;</li>
+<li>both \lambda_1 and \lambda_2 are large – corner region.</li>
+</ul>
+<p>Using this relations for eigenvalues:</p>
+<p>\[ det(M) = \lambda_1 * \lambda_2 \]</p>
+<p>\[ trace(M) = \lambda_1 + \lambda_2 \]</p>
+<p>Response:</p>
+<p>\[ R = det(M) - k * trace(M) ^ 2 \]</p>
+<pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">Main</span> <span class="kw">where</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.Array.Repa</span> <span class="kw">as</span> <span class="dt">R</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.Array.Repa.IO.BMP</span> <span class="kw">as</span> <span class="dt">IO</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.Array.Repa.Algorithms.Pixel</span> <span class="kw">as</span> <span class="dt">R</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.Array.Repa.Algorithms.Convolve</span> <span class="kw">as</span> <span class="dt">R</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.List</span> <span class="kw">as</span> <span class="dt">L</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.Vector.Unboxed.Base</span> <span class="kw">as</span> <span class="dt">V</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.Word</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">System.Environment</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">type</span> <span class="dt">Image</span>  <span class="fu">=</span> <span class="dt">Array</span> <span class="dt">U</span> <span class="dt">DIM2</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; harrisP ::</span> <span class="dt">Int</span>              <span class="co">-- ^ size of gaussian;</span>
+<span class="ot">&gt;</span>         <span class="ot">-&gt;</span> <span class="dt">Float</span>            <span class="co">-- ^ harris free parameter;</span>
+<span class="ot">&gt;</span>         <span class="ot">-&gt;</span> <span class="dt">Image</span> <span class="dt">Float</span>      <span class="co">-- ^ input image;</span>
+<span class="ot">&gt;</span>         <span class="ot">-&gt;</span> <span class="dt">IO</span> (<span class="dt">Image</span> <span class="dt">Float</span>) <span class="co">-- ^ output image.</span>
+<span class="ot">&gt;</span> harrisP s k i <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     i_x   <span class="ot">&lt;-</span> convolveOutP outClamp sobelX<span class="ot"> i ::</span> <span class="dt">IO</span> (<span class="dt">Image</span> <span class="dt">Float</span>)
+<span class="ot">&gt;</span>     i_y   <span class="ot">&lt;-</span> convolveOutP outClamp sobelY<span class="ot"> i ::</span> <span class="dt">IO</span> (<span class="dt">Image</span> <span class="dt">Float</span>)
+<span class="ot">&gt;</span>     i_xx  <span class="ot">&lt;-</span> computeP <span class="fu">$</span> R.zipWith (<span class="fu">*</span>) i_x i_x
+<span class="ot">&gt;</span>     i_xxw <span class="ot">&lt;-</span> convolveOutP outClamp (gaussKern2d s) i_xx
+<span class="ot">&gt;</span>     i_xy  <span class="ot">&lt;-</span> computeP <span class="fu">$</span> R.zipWith (<span class="fu">*</span>) i_x i_y
+<span class="ot">&gt;</span>     i_xyw <span class="ot">&lt;-</span> convolveOutP outClamp (gaussKern2d s) i_xy
+<span class="ot">&gt;</span>     i_yy  <span class="ot">&lt;-</span> computeP <span class="fu">$</span> R.zipWith (<span class="fu">*</span>) i_y i_y
+<span class="ot">&gt;</span>     i_yyw <span class="ot">&lt;-</span> convolveOutP outClamp (gaussKern2d s) i_yy
+<span class="ot">&gt;</span>     computeP <span class="fu">$</span> Main.zipWith3 response i_xxw i_xyw i_yyw
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     response xx xy yy <span class="fu">=</span> (xx <span class="fu">*</span> yy <span class="fu">-</span> xy <span class="fu">*</span> xy) <span class="fu">-</span> k <span class="fu">*</span> ((xx <span class="fu">*</span> yy) <span class="fu">^</span> <span class="dv">2</span>)</code></pre>
+<h2 id="result">Result</h2>
+<div class="figure">
+<img src="../images/harris-corners.bmp" alt="Image corners highlighted with red dots. To get the final image non-maximum suppression and naive thresholding is used." /><p class="caption">Image corners highlighted with red dots. To get the final image non-maximum suppression and naive thresholding is used.</p>
+</div>
+<p>Some considerations to make the method more robust:</p>
+<ul>
+<li><p>output of Harris detector <strong>must</strong> be fed to non-maximum suppression to get precise corner locations;</p></li>
+<li><p>histogram equalization may be applied to response map in order to keep number of corners constant.</p></li>
+<li><p><strong>TODO</strong> Otsu’s method?</p></li>
+</ul>
+<h2 id="further-reading">Further reading</h2>
+<p><a href="http://www.bmva.org/bmvc/1988/avc-88-023.pdf">A combined corner and edge detector</a>. C. Harris and M. Stephens (1988). Proceedings of the 4th Alvey Vision Conference. pp. 147–151.</p>
+<h2 id="appendix">Appendix</h2>
+<p>Main function used to generate image samples and helper functions.</p>
+<pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">type</span> <span class="dt">Kernel</span> <span class="fu">=</span> <span class="dt">Array</span> <span class="dt">U</span> <span class="dt">DIM2</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; sobelX ::</span> <span class="dt">Unbox</span> a <span class="ot">=&gt;</span> <span class="dt">Num</span> a <span class="ot">=&gt;</span> <span class="dt">Kernel</span> a
+<span class="ot">&gt;</span> sobelX <span class="fu">=</span> R.fromListUnboxed (<span class="dt">Z</span> <span class="fu">:.</span> <span class="dv">3</span> <span class="fu">:.</span> <span class="dv">3</span>)
+<span class="ot">&gt;</span>   [ <span class="fu">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>
+<span class="ot">&gt;</span>   , <span class="fu">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>
+<span class="ot">&gt;</span>   , <span class="fu">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>
+<span class="ot">&gt;</span>   ]
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; sobelY ::</span> <span class="dt">Unbox</span> a <span class="ot">=&gt;</span> <span class="dt">Num</span> a <span class="ot">=&gt;</span> <span class="dt">Kernel</span> a
+<span class="ot">&gt;</span> sobelY <span class="fu">=</span> R.fromListUnboxed (<span class="dt">Z</span> <span class="fu">:.</span> <span class="dv">3</span> <span class="fu">:.</span> <span class="dv">3</span>)
+<span class="ot">&gt;</span>   [  <span class="dv">1</span>,  <span class="dv">2</span>,  <span class="dv">1</span>
+<span class="ot">&gt;</span>   ,  <span class="dv">0</span>,  <span class="dv">0</span>,  <span class="dv">0</span>
+<span class="ot">&gt;</span>   , <span class="fu">-</span><span class="dv">1</span>, <span class="fu">-</span><span class="dv">2</span>, <span class="fu">-</span><span class="dv">1</span>
+<span class="ot">&gt;</span>   ]
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- | Gaussian function.</span>
+<span class="ot">&gt; gaussian2d ::</span> <span class="dt">Floating</span> a <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">DIM2</span> <span class="ot">-&gt;</span> a
+<span class="ot">&gt;</span> gaussian2d sigma ix <span class="fu">@</span> (<span class="dt">Z</span> <span class="fu">:.</span> xi <span class="fu">:.</span> yi)  <span class="fu">=</span> coeff <span class="fu">*</span> exp (negate degree)
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     coeff  <span class="fu">=</span> recip (<span class="dv">2</span> <span class="fu">*</span> pi <span class="fu">*</span> sigma <span class="fu">*</span> sigma)
+<span class="ot">&gt;</span>     degree <span class="fu">=</span> (x <span class="fu">*</span> x <span class="fu">+</span> y <span class="fu">*</span> y) <span class="fu">/</span> (<span class="dv">2</span> <span class="fu">*</span> sigma <span class="fu">*</span> sigma)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span>     x <span class="fu">=</span> fromIntegral xi
+<span class="ot">&gt;</span>     y <span class="fu">=</span> fromIntegral yi
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- | Gaussian kernel.</span>
+<span class="ot">&gt; gaussKern2d ::</span> <span class="dt">Unbox</span> a <span class="ot">=&gt;</span> <span class="dt">Floating</span> a <span class="ot">=&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Kernel</span> a
+<span class="ot">&gt;</span> gaussKern2d s <span class="fu">=</span> computeS <span class="fu">$</span> R.fromFunction (<span class="dt">Z</span> <span class="fu">:.</span> s <span class="fu">:.</span> s) sample
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     cs <span class="fu">=</span> s <span class="ot">`div`</span> <span class="dv">2</span>
+<span class="ot">&gt;</span>     sample (<span class="dt">Z</span> <span class="fu">:.</span> x <span class="fu">:.</span> y) <span class="fu">=</span> gaussian2d (fromIntegral (s <span class="fu">*</span> s) <span class="fu">/</span> <span class="dv">36</span>) (<span class="dt">Z</span> <span class="fu">:.</span> (x <span class="fu">-</span> cs) <span class="fu">:.</span> (y <span class="fu">-</span> cs))
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; zipWith3 ::</span> (<span class="dt">Source</span> r1 a, <span class="dt">Source</span> r2 b, <span class="dt">Source</span> r3 c) <span class="ot">=&gt;</span> (<span class="dt">Shape</span> sh)
+<span class="ot">&gt;</span>          <span class="ot">=&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c <span class="ot">-&gt;</span> d)
+<span class="ot">&gt;</span>          <span class="ot">-&gt;</span> <span class="dt">Array</span> r1 sh a <span class="ot">-&gt;</span> <span class="dt">Array</span> r2 sh b <span class="ot">-&gt;</span> <span class="dt">Array</span> r3 sh c <span class="ot">-&gt;</span> <span class="dt">Array</span> <span class="dt">D</span> sh d
+<span class="ot">&gt;</span> zipWith3 f a b c <span class="fu">=</span> traverse3 a b c (\ sh _ _ <span class="ot">-&gt;</span> sh) produce <span class="kw">where</span>
+<span class="ot">&gt;</span>   produce getA getB getC pos <span class="fu">=</span> f (getA pos) (getB pos) (getC pos)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- | Non-maximum suppression.</span>
+<span class="ot">&gt; nms ::</span> <span class="dt">Image</span> <span class="dt">Float</span> <span class="ot">-&gt;</span> <span class="dt">Image</span> <span class="dt">Float</span>
+<span class="ot">&gt;</span> nms img <span class="fu">=</span> computeS  <span class="fu">$</span> R.zipWith suppress extrema img
+<span class="ot">&gt;</span>  <span class="kw">where</span>
+<span class="ot">&gt;</span>    suppress e x <span class="fu">=</span> <span class="kw">if</span> x <span class="fu">==</span> e <span class="kw">then</span> x <span class="kw">else</span> <span class="dv">0</span>
+<span class="ot">&gt;</span>    extrema <span class="fu">=</span> R.foldS max <span class="dv">0</span> <span class="fu">$</span> R.foldS max <span class="dv">0</span> neighborhood
+<span class="ot">&gt;</span>    neighborhood <span class="fu">=</span> R.backpermute (extent img <span class="fu">:.</span> <span class="dv">3</span> <span class="fu">:.</span> <span class="dv">3</span>) f img
+<span class="ot">&gt;</span>      <span class="kw">where</span>
+<span class="ot">&gt;</span>        f (<span class="dt">Z</span> <span class="fu">:.</span> y <span class="fu">:.</span> x <span class="fu">:.</span> j <span class="fu">:.</span> i) <span class="fu">=</span> <span class="dt">Z</span> <span class="fu">:.</span> posX <span class="fu">:.</span> posY
+<span class="ot">&gt;</span>          <span class="kw">where</span>
+<span class="ot">&gt;</span>            posX <span class="fu">=</span> min (w <span class="fu">-</span> <span class="dv">1</span>) <span class="fu">$</span> max <span class="dv">0</span> (y <span class="fu">+</span> j <span class="fu">-</span> <span class="dv">1</span>)
+<span class="ot">&gt;</span>            posY <span class="fu">=</span> min (h <span class="fu">-</span> <span class="dv">1</span>) <span class="fu">$</span> max <span class="dv">0</span> (x <span class="fu">+</span> i <span class="fu">-</span> <span class="dv">1</span>)
+<span class="ot">&gt;</span>            <span class="dt">Z</span> <span class="fu">:.</span> h <span class="fu">:.</span> w <span class="fu">=</span> extent img
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; range ::</span> <span class="dt">Image</span> <span class="dt">Float</span> <span class="ot">-&gt;</span> (<span class="dt">Float</span>, <span class="dt">Float</span>)
+<span class="ot">&gt;</span> range i <span class="fu">=</span> (foldAllS min (<span class="dv">1</span><span class="fu">/</span><span class="dv">0</span>) i, foldAllS max (<span class="fu">-</span><span class="dv">1</span><span class="fu">/</span><span class="dv">0</span>) i)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; normalize ::</span> <span class="dt">Image</span> <span class="dt">Float</span> <span class="co">-- ^ arbitrary range array;</span>
+<span class="ot">&gt;</span>           <span class="ot">-&gt;</span> <span class="dt">Image</span> <span class="dt">Float</span> <span class="co">-- ^ each value of the array scaled to [0..1] range;</span>
+<span class="ot">&gt;</span> normalize i <span class="fu">=</span> computeS <span class="fu">$</span> R.map cv i
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     cv x <span class="fu">=</span> ((x <span class="fu">-</span> mn) <span class="fu">*</span> rr)
+<span class="ot">&gt;</span>     rr <span class="fu">=</span> recip (mx <span class="fu">-</span> mn)
+<span class="ot">&gt;</span>     (mn, mx) <span class="fu">=</span> range i
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- | Apply a single threshold to an array.</span>
+<span class="ot">&gt; quantizeS ::</span> (<span class="dt">Source</span> r a, <span class="dt">Shape</span> sh)
+<span class="ot">&gt;</span>           <span class="ot">=&gt;</span> (<span class="dt">Ord</span> a)
+<span class="ot">&gt;</span>           <span class="ot">=&gt;</span> a <span class="co">-- ^ threshold;</span>
+<span class="ot">&gt;</span>           <span class="ot">-&gt;</span> <span class="dt">Array</span> r sh a <span class="ot">-&gt;</span> <span class="dt">Array</span> <span class="dt">D</span> sh <span class="dt">Bool</span>
+<span class="ot">&gt;</span> quantizeS t <span class="fu">=</span> R.map (\ x <span class="ot">-&gt;</span> x <span class="fu">&gt;=</span> t)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- | Morphological erosion.</span>
+<span class="ot">&gt; erode ::</span> <span class="dt">DIM2</span> <span class="co">-- ^ size of structuring element;</span>
+<span class="ot">&gt;</span>       <span class="ot">-&gt;</span> <span class="dt">Image</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> (<span class="dt">Image</span> <span class="dt">Bool</span>)
+<span class="ot">&gt;</span> erode sh i <span class="fu">=</span> fmap (computeS <span class="fu">.</span> R.map (<span class="fu">&gt;=</span> <span class="dv">1</span>))
+<span class="ot">&gt;</span>            <span class="fu">$</span> convolveOutP outClamp k
+<span class="ot">&gt;</span>            <span class="fu">$</span> computeS <span class="fu">$</span> R.map fromEnum i
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     k <span class="fu">=</span> R.computeS <span class="fu">$</span> R.fromFunction sh (const <span class="dv">1</span>)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">type</span> <span class="dt">RGB</span> <span class="fu">=</span> (<span class="dt">Word8</span>, <span class="dt">Word8</span>, <span class="dt">Word8</span>)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; blend ::</span> <span class="dt">Image</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Image</span> <span class="dt">RGB</span> <span class="ot">-&gt;</span> <span class="dt">Image</span> <span class="dt">RGB</span> <span class="ot">-&gt;</span> <span class="dt">Image</span> <span class="dt">RGB</span>
+<span class="ot">&gt;</span> blend maskArr aArr bArr <span class="fu">=</span> computeS <span class="fu">$</span> Main.zipWith3 mix maskArr aArr bArr
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     mix mask a b
+<span class="ot">&gt;</span>       <span class="fu">|</span>    mask   <span class="fu">=</span> b
+<span class="ot">&gt;</span>       <span class="fu">|</span> otherwise <span class="fu">=</span> a
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; redImage ::</span> <span class="dt">DIM2</span> <span class="ot">-&gt;</span> <span class="dt">Image</span> <span class="dt">RGB</span>
+<span class="ot">&gt;</span> redImage sh <span class="fu">=</span> R.computeS <span class="fu">$</span> R.fromFunction sh (const (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>))
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; main ::</span> <span class="dt">IO</span> ()
+<span class="ot">&gt;</span> main <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   args <span class="ot">&lt;-</span> getArgs
+<span class="ot">&gt;</span>   <span class="kw">let</span> (src, dst, s, k, t) <span class="fu">=</span> <span class="kw">case</span> args <span class="kw">of</span> {
+<span class="ot">&gt;</span>     [srcStr, dstStr, sStr, kStr, tStr] <span class="ot">-&gt;</span> (srcStr, dstStr, read sStr, read kStr, read tStr);
+<span class="ot">&gt;</span>     _      <span class="ot">-&gt;</span> (<span class="st">&quot;images/harris-orig.bmp&quot;</span>, <span class="st">&quot;images/harris-corners.bmp&quot;</span>, <span class="dv">7</span>, <span class="fl">0.04</span>, <span class="fl">0.5</span>)
+<span class="ot">&gt;</span>     }
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;Loading original image...&quot;</span>
+<span class="ot">&gt;</span>   <span class="dt">Right</span> orig <span class="ot">&lt;-</span> readImageFromBMP src
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;Color to grayscale convertion...&quot;</span>
+<span class="ot">&gt;</span>   gray <span class="ot">&lt;-</span> computeP <span class="fu">$</span> R.map floatLuminanceOfRGB8<span class="ot"> orig ::</span> <span class="dt">IO</span> (<span class="dt">Image</span> <span class="dt">Float</span>)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;Corner detection...&quot;</span>
+<span class="ot">&gt;</span>   responses <span class="ot">&lt;-</span> harrisP s k gray
+<span class="ot">&gt;</span>   <span class="kw">let</span> corners <span class="fu">=</span> quantizeS t <span class="fu">$</span> nms <span class="fu">$</span> normalize responses
+<span class="ot">&gt;</span>   <span class="kw">let</span> npoints <span class="fu">=</span> L.head <span class="fu">$</span> R.toList <span class="fu">$</span> sumS <span class="fu">$</span> sumS <span class="fu">$</span> R.map fromEnum corners
+<span class="ot">&gt;</span>   putStrLn <span class="fu">$</span> <span class="st">&quot;Corners detected: &quot;</span> <span class="fu">L.++</span> show npoints
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;Composing final image...&quot;</span>
+<span class="ot">&gt;</span>   mask <span class="ot">&lt;-</span> erode (<span class="dt">Z</span> <span class="fu">:.</span> <span class="dv">3</span> <span class="fu">:.</span> <span class="dv">3</span>) <span class="fu">$</span> computeS corners
+<span class="ot">&gt;</span>   writeImageToBMP dst <span class="fu">$</span> blend mask orig (redImage (extent orig))</code></pre>
+<p>This is a Literate Haskell file, so you can clone and run it using the “<a href="#source">Source</a>” link below. The accompanied source code is not performance-wise, have not been optimized for performance and/or memory usage and written for demostration purposes only.</p>
+<p>It is assumed you have <a href="https://www.haskell.org/platform/">Haskell Platform</a> installed. In order to run the code snippets you need also to install <a href="http://hackage.haskell.org/package/repa">repa</a>, <a href="http://hackage.haskell.org/package/repa-algorithms">repa-algorithms</a>, <a href="http://hackage.haskell.org/package/repa-io">repa-io</a> packages. This can be done by issuing <code>$ cabal install repa repa-algorithms repa-io</code> command in your terminal. Build it with <code>$ ghc -O3 -Odph -optlo-O3 -threaded -llvm</code> flags for better performance.</p>
+<p>Usage: <code>harris input.bmp output.bmp $GAUSS_SIZE $HARRIS_FREE_COEFF $THRESHOLD</code></p>
+  </section>
+
+  <footer>
+    <span>
+    
+      <i class="fa fa-tags"></i> <a href="../tags/cv.html" title="1 post tagged with cv">cv</a>, <a href="../tags/Repa.html" title="1 post tagged with Repa">Repa</a>, <a href="../tags/draft.html" title="1 post tagged with draft">draft</a>
+    
+    </span>
+
+
+    <span id="source" class="hidden-phone">
+      <i class="fa fa-file-code-o"></i>
+      <a href="https://github.com/pxqr/pxqr.github.io/blob/source/posts/2014-09-08-harris-corner-detector.lhs" title="Source code for this post in LiterateHaskell Markdown format">Source</a>
+    </span>
+  </footer>
+
+  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+  
+</article>
+<footer>
+  <section id="comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'pxqr';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </section>
+
+  <section id="pagination">
+    <ul>
+      
+
+      <li>
+        <a rel="directory" href="../archive.html" title="Go to Archive">Back</a>
+      </li>
+
+      
+    </ul>
+  </footer>
+</footer>
+
+    </section>
+
+    <footer class="global">
+      Built with
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+      &
+      <a href="http://johnmacfarlane.net/pandoc">Pandoc</a>.
+      Hosted by
+      <a href="https://github.com/pxqr/pxqr.github.io/">GitHub</a>.
+    </footer>
+  </body>
+</html>
