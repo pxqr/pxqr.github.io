@@ -98,7 +98,7 @@ Response:
 >     i_yyw <- convolveOutP outClamp (gaussKern2d s) i_yy
 >     computeP $ Main.zipWith3 response i_xxw i_xyw i_yyw
 >   where
->     response xx xy yy = (xx * yy - xy * xy) - k * ((xx * yy) ^ 2)
+>     response xx xy yy = (xx * yy - xy * xy) - k * ((xx + yy) ^ 2)
 
 Result
 ----------
