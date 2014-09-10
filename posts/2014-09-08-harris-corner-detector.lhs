@@ -49,7 +49,7 @@ $$ E(u, v) = \\sum_{x, y} w(x, y)
    \begin{bmatrix}u \\ v\end{bmatrix}
 $$
 
-Float in sum (uv vector does not depend on sum) and give a name for the covariance matrix:
+Float in sum (uv vector does not depend on sum) and give a name for the Hessian matrix:
 
 $$ E(u, v) = \begin{bmatrix}u & v\end{bmatrix} M \begin{bmatrix}u \\ v\end{bmatrix} $$
 
