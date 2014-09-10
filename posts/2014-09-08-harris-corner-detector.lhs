@@ -227,7 +227,7 @@ Main function used to generate image samples and helper functions.
 >   args <- getArgs
 >   let (src, dst, s, k, t) = case args of {
 >     [srcStr, dstStr, sStr, kStr, tStr] -> (srcStr, dstStr, read sStr, read kStr, read tStr);
->     _      -> ("images/harris-orig.bmp", "images/harris-corners.bmp", 7, 0.04, 0.5)
+>     _      -> ("images/harris-orig.bmp", "images/harris-corners.bmp", 9, 0.04, 0.2)
 >     }
 >
 >   putStrLn "Loading original image..."
