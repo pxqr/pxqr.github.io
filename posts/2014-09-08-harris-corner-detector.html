@@ -142,7 +142,7 @@ $$</span><br /></p>
 <span class="ot">&gt;</span>     i_yyw <span class="ot">&lt;-</span> convolveOutP outClamp (gaussKern2d s) i_yy
 <span class="ot">&gt;</span>     computeP <span class="fu">$</span> Main.zipWith3 response i_xxw i_xyw i_yyw
 <span class="ot">&gt;</span>   <span class="kw">where</span>
-<span class="ot">&gt;</span>     response xx xy yy <span class="fu">=</span> (xx <span class="fu">*</span> yy <span class="fu">-</span> xy <span class="fu">*</span> xy) <span class="fu">-</span> k <span class="fu">*</span> ((xx <span class="fu">*</span> yy) <span class="fu">^</span> <span class="dv">2</span>)</code></pre>
+<span class="ot">&gt;</span>     response xx xy yy <span class="fu">=</span> (xx <span class="fu">*</span> yy <span class="fu">-</span> xy <span class="fu">*</span> xy) <span class="fu">-</span> k <span class="fu">*</span> ((xx <span class="fu">+</span> yy) <span class="fu">^</span> <span class="dv">2</span>)</code></pre>
 <h2 id="result">Result</h2>
 <div class="figure">
 <img src="../images/harris-corners.bmp" alt="Image corners highlighted with red dots. To get the final image non-maximum suppression and naive thresholding is used." /><p class="caption">Image corners highlighted with red dots. To get the final image non-maximum suppression and naive thresholding is used.</p>
@@ -254,7 +254,7 @@ $$</span><br /></p>
 <span class="ot">&gt;</span>   args <span class="ot">&lt;-</span> getArgs
 <span class="ot">&gt;</span>   <span class="kw">let</span> (src, dst, s, k, t) <span class="fu">=</span> <span class="kw">case</span> args <span class="kw">of</span> {
 <span class="ot">&gt;</span>     [srcStr, dstStr, sStr, kStr, tStr] <span class="ot">-&gt;</span> (srcStr, dstStr, read sStr, read kStr, read tStr);
-<span class="ot">&gt;</span>     _      <span class="ot">-&gt;</span> (<span class="st">&quot;images/harris-orig.bmp&quot;</span>, <span class="st">&quot;images/harris-corners.bmp&quot;</span>, <span class="dv">7</span>, <span class="fl">0.04</span>, <span class="fl">0.5</span>)
+<span class="ot">&gt;</span>     _      <span class="ot">-&gt;</span> (<span class="st">&quot;images/harris-orig.bmp&quot;</span>, <span class="st">&quot;images/harris-corners.bmp&quot;</span>, <span class="dv">9</span>, <span class="fl">0.04</span>, <span class="fl">0.2</span>)
 <span class="ot">&gt;</span>     }
 <span class="ot">&gt;</span> 
 <span class="ot">&gt;</span>   putStrLn <span class="st">&quot;Loading original image...&quot;</span>
