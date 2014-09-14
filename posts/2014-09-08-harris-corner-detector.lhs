@@ -1,7 +1,7 @@
 ---
 title: Harris corner detector
 description: Implementation of the harris corner detection algorithm using Haskell.
-tags: cv, Repa, draft
+tags: CV, Repa, draft
 mathjax: on
 ---
 
