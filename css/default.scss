@@ -58,6 +58,22 @@ $background: #f7f7f7;
 $link:       #33d;
 $visited:    #d33;
 
+blockquote {
+  background: $background;
+  border-left: 10px solid $decoration;
+  margin: 1.5em 20px;
+  padding: 0.5em 10px;
+}
+
+blockquote:before {
+  color: $decoration;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
 h1, h2, h3 {
     margin-top: 1em;
     margin-bottom: 0.5em;

@@ -31,6 +31,19 @@
   </aside>
   $endif$
 
+  $if(quote)$
+  <section id="citation">
+    <blockquote>
+      <q>$quote$</q>
+      $if(quote-author)$
+      <footer>
+        - <cite>$quote-author$</cite>
+      </footer>
+      $endif$
+    </blockquote>
+  </section>
+  $endif$
+
   <section>
     <link rel="stylesheet" type="text/css"
           href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css"/>
