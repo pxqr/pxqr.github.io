@@ -10,9 +10,6 @@ import           Text.Pandoc.Options
 import           Text.Pandoc.Walk
 import           Hakyll as H
 
-gpgSignCompiler :: Compiler (Item String)
-gpgSignCompiler = getResourceString >>= withItemBody (unixFilter "gpg" ["--clearsign"])
-
 main :: IO ()
 main = hakyll $ do
     match (H.fromList ["humans.txt", "robots.txt", "opensearch.xml"]) $ do
@@ -44,10 +41,6 @@ main = hakyll $ do
     match "404.html" $ do
         route   idRoute
         compile $ getResourceBody >>= applyAsTemplate defContext
-
-    match "message.txt" $ do
-        route   $ setExtension ".txt.asc"
-        compile $ gpgSignCompiler
 
     match "about.md" $ do
         route   $ setExtension "html"
