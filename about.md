@@ -15,3 +15,5 @@ You can contact me via email
     document.getElementById("email-link").href = "mailto:"
       + reverse("moc.liamg@ats.rqxp") + "?subject=Considering pxqr.info blog&body=Hi! ";
 </script>
+
+My public key <a href="https://raw.githubusercontent.com/pxqr/pxqr.github.io/master/message.txt.asc" target="_blank">info</a>.

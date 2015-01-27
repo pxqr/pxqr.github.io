@@ -1,0 +1,6 @@
+My public key info is:
+   ID:                                           1F3A 2ADA
+   Fpr: D86D D16D 7A17 4FB7 31E5  7C54 0080 C116 1F3A 2ADA
+
+You can get the key through PKA <sam@pxqr.info> or directly from
+keyserver like pgp.mit.edu.
