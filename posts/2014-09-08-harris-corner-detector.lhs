@@ -1,5 +1,5 @@
 ---
-title: Harris corner detector
+title: Harris Corner Detector
 description: Implementation of the harris corner detection algorithm using Haskell.
 tags: CV, Repa, draft
 mathjax: on

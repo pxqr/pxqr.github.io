@@ -1,5 +1,5 @@
 ---
-title:       Adding Table Of Contents
+title:       Adding Table of Contents
 description: How to generate table of contents for Hakyll blog posts.
 tags:        Hakyll, Pandoc
 toc:         include
