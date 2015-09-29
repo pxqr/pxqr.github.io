@@ -42,12 +42,6 @@ main = hakyll $ do
         route   idRoute
         compile $ getResourceBody >>= applyAsTemplate defContext
 
-    match "about.md" $ do
-        route   $ setExtension "html"
-        compile $ pandocCompilerWithTransform readerOptions writerOptions id
-            >>= loadAndApplyTemplate "templates/base.html" defaultContext
-            >>= relativizeUrls
-
     tags <- buildTags "articles/*" (fromCapture "tags/*.html")
 
     match "articles/*" $ do
