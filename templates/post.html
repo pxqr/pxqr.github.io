@@ -1,107 +1,104 @@
-<article>
-  <h1>$title$</h1>
-  <header>
-    <span>
-    $date$
-    $if(author)$
-    by $author$
-    $endif$
-    </span>
+<div class="container">
+    <header class="page-header">
+        <h1>$title$</h1>
+    </header>
+    <article id="content" class="panel panel-default">
+        <header class="panel-heading">
+            <span>
+                $date$
+                $if(author)$
+                by $author$
+                $endif$
+            </span>
+            $if(readingtime)$
+            <span class="pull-right">est. reading time <span class="label label-info">$readingtime$ min</span></span>
+            $endif$
+        </header>
+
+        $if(quote)$
+        <section id="citation">
+            <blockquote>
+                <q>$quote$</q>
+                $if(quote-author)$
+                <footer>
+                    - <cite>$quote-author$</cite>
+                </footer>
+                $endif$
+            </blockquote>
+        </section>
+        $endif$
+
+        <section class="panel-body">
+            <!--    <link rel="stylesheet" type="text/css"
+            href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css"/>
+            -->
+            $body$
+        </section>
+
+        <footer class="panel-footer">
+            <span class="tags">
+                $if(tags)$
+                <i class="fa fa-tags"></i> $taglist$
+                $endif$
+            </span>
+
+            <span id="actions" class="pull-right">
+                <!-- refine order -->
+                <span id="source" class="hidden-phone">
+                    <i class="fa fa-file-code-o"></i>
+                    <a href="https://github.com/pxqr/pxqr.github.io/blob/source/$path$"
+                       title="Source code for this post in $format$ format"
+                       target="_blank">Source</a>
+                </span>
+                <span id="edit">
+                    <span class="fa fa-code-fork"></span>
+                    <a href="#" data-toggle="tooltip" data-placement="left" title="Edit article">
+                        Edit
+                    </a>
+                </span>
+            </span>
+        </footer>
+
+        $if(mathjax)$
+        <script type="text/javascript"
+                src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        $endif$
+    </article>
 
 
-    <span>
-    $if(readingtime)$
-      est. reading time: $readingtime$ min
-    $endif$
-    </span>
-  </header>
+    <nav id="pager">
+        <ul class="pager">
+            $if(prev)$
+            <li class="previous">
+                <a href="/posts/$prev$.html" title="Go to $prev$">← Previous</a>
+            </li>
+            $endif$
 
-  $if(toc)$
-  <aside class="visible-desktop">
-    <nav id="toc">
-      <p>Contents</p>
-      <ul>
-        $for(headings)$
-        <li>
-          <a href="#$fragment$">$caption$</a>
-        </li>
-        $endfor$
-      </ul>
+            <li>
+                <a rel="directory" href="/archive.html" title="Go to Archive">Back</a>
+            </li>
+
+            $if(next)$
+            <li class="next">
+                <a href="/posts/$next$.html" title="Go to $next$">Next →</a>
+            </li>
+            $endif$
+        </ul>
     </nav>
-  </aside>
-  $endif$
 
-  $if(quote)$
-  <section id="citation">
-    <blockquote>
-      <q>$quote$</q>
-      $if(quote-author)$
-      <footer>
-        - <cite>$quote-author$</cite>
-      </footer>
-      $endif$
-    </blockquote>
-  </section>
-  $endif$
-
-  <section>
-    <link rel="stylesheet" type="text/css"
-          href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css"/>
-    $body$
-  </section>
-
-  <footer>
-    <span>
-    $if(tags)$
-      <i class="fa fa-tags"></i> $taglist$
-    $endif$
-    </span>
-
-
-    <span id="source" class="hidden-phone">
-      <i class="fa fa-file-code-o"></i>
-      <a href="https://github.com/pxqr/pxqr.github.io/blob/source/$path$"
-         title="Source code for this post in $format$ format">Source</a>
-    </span>
-  </footer>
-
-  $if(mathjax)$
-  <script type="text/javascript"
-          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-  </script>
-  $endif$
-</article>
-<footer>
-  <section id="comments">
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        var disqus_shortname = 'pxqr';
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the comments</noscript>
-  </section>
-
-  <section id="pagination">
-    <ul>
-      $if(prev)$
-      <li>
-        <a href="/posts/$prev$.html" title="Go to $prev$">← Previous</a>
-      </li>
-      $endif$
-
-      <li>
-        <a rel="directory" href="/archive.html" title="Go to Archive">Back</a>
-      </li>
-
-      $if(next)$
-      <li>
-        <a href="/posts/$next$.html" title="Go to $next$">Next →</a>
-      </li>
-      $endif$
-    </ul>
-  </footer>
-</footer>
+    <footer>
+        <section id="comments" class="panel panel-default">
+            <div id="disqus_thread" class="panel-body"></div>
+            <script type="text/javascript">
+             var disqus_shortname = 'pxqr';
+             (function() {
+                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+             })();
+            </script>
+            <noscript>Please enable JavaScript to view the comments</noscript>
+        </section>
+    </footer>
+</div>

@@ -10,6 +10,6 @@ From:        Russia
 
 Language:    English
 Standards:   HTML5, CSS3, Atom
-Components:  MathJax
+Components:  MathJax, Bootstrap
 Software:    GHC, Cabal, Pandoc, SASS, Hakyll
 IDE:         Emacs
