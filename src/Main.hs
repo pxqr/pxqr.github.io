@@ -117,7 +117,7 @@ readerOptions = defaultHakyllReaderOptions
 writerOptions :: WriterOptions
 writerOptions = defaultHakyllWriterOptions
 
-author, email, host :: String
+author, email, host, root :: String
 author = "Samvel Truzyan"
 email  = "samveldottruzyanatgooogmail"
 host   = "pxqr.info"
