@@ -218,4 +218,4 @@ tagsCtx articles tag tags =
     constField "topic"    tag                              `mappend`
     listField  "articles"   (articleCtx tags)  (return articles) `mappend`
     relatedCtx tag tags                                    `mappend`
-    defaultContext
+    defContext
