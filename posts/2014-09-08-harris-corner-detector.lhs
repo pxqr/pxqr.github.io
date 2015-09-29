@@ -3,11 +3,17 @@ title: Harris Corner Detector
 description: Implementation of the harris corner detection algorithm using Haskell.
 tags: CV, Repa, draft
 mathjax: on
+preview: /images/harris-corners.bmp
+toc: on
+state: primary
 ---
 
-__TODO__ SSD & interest point
+Overview
+----
 
 ![Original image of some Paris building.](/images/harris-orig.bmp)
+
+__TODO__ SSD & interest point
 
 SSD(corner metric):
 

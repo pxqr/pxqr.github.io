@@ -3,7 +3,11 @@ title:       Adding Table of Contents
 description: How to generate table of contents for Hakyll blog posts.
 tags:        Hakyll, Pandoc
 toc:         include
+state:       info
 ---
+
+Overview
+-----
 
 Sometimes blog posts might grow so they won't fit in two or more
 screen pages. A good practice is to break post or article into parts
