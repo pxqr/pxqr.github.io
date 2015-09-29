@@ -118,16 +118,16 @@ readerOptions = defaultHakyllReaderOptions
 writerOptions :: WriterOptions
 writerOptions = defaultHakyllWriterOptions
 
-author, email, host, root :: String
+author, email, host, root, blogTitle :: String
 author = "Samvel Truzyan"
 email  = "samveldottruzyanatgooogmail"
 host   = "pxqr.info"
 root   = "http://" ++ host
-
+blogTitle = "Strange Dev Blog"
 
 feedConfiguration :: FeedConfiguration
 feedConfiguration = FeedConfiguration
-  { feedTitle       = "Strange Dev Blog"
+  { feedTitle       = blogTitle
   , feedDescription = "Articles feed"
   , feedAuthorName  = author
   , feedAuthorEmail = email
@@ -160,6 +160,7 @@ defContext :: Context String
 defContext =
     constField "root"   root `mappend`
     constField "host"   host `mappend`
+    constField "blogtitle" blogTitle `mappend`
     defaultContext
 
 formatField :: String -> Context String
