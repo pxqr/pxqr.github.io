@@ -9,9 +9,17 @@ import           Text.Pandoc.Definition
 import           Text.Pandoc.Options
 import           Text.Pandoc.Walk
 import           Hakyll as H
+import           Data.Configurator as Config
+import qualified Data.Configurator.Types as Config
+import qualified Data.HashMap.Strict as HM
+import qualified Data.Text as T
+import           System.IO.Unsafe (unsafePerformIO)
 
 articlesGlob :: Pattern
 articlesGlob = "content/articles/*"
+
+configPaths :: [Worth FilePath]
+configPaths = [Required "config"]
 
 main :: IO ()
 main = hakyll $ do
@@ -118,21 +126,20 @@ readerOptions = defaultHakyllReaderOptions
 writerOptions :: WriterOptions
 writerOptions = defaultHakyllWriterOptions
 
-author, email, host, root, blogTitle :: String
-author = "Samvel Truzyan"
-email  = "samveldottruzyanatgooogmail"
-host   = "pxqr.info"
-root   = "http://" ++ host
-blogTitle = "Strange Dev Blog"
-
 feedConfiguration :: FeedConfiguration
-feedConfiguration = FeedConfiguration
-  { feedTitle       = blogTitle
-  , feedDescription = "Articles feed"
-  , feedAuthorName  = author
-  , feedAuthorEmail = email
-  , feedRoot        = root
-  }
+feedConfiguration = unsafePerformIO $ do
+  config <- Config.load configPaths
+  name <- require config "name"
+  author <- require config "author"
+  email <- require config "email"
+  root  <- require config "root"
+  return $ FeedConfiguration
+    { feedTitle       = name
+    , feedDescription = "Articles feed"
+    , feedAuthorName  = author
+    , feedAuthorEmail = email
+    , feedRoot        = root
+    }
 
 headings :: Pandoc -> [String]
 headings = query extractHeader
@@ -157,11 +164,13 @@ headingsField = listField "headings" headingField getHeadings
       mapM makeItem $ headings $ itemBody $ readPandoc body
 
 defContext :: Context String
-defContext =
-    constField "root"   root `mappend`
-    constField "host"   host `mappend`
-    constField "blogtitle" blogTitle `mappend`
-    defaultContext
+defContext = mappend defaultContext $ unsafePerformIO $ do
+    config <- Config.load configPaths
+    hmap <- getMap config
+    return $ mconcat $ L.map (uncurry configField) $ HM.toList hmap
+  where
+    configField key (Config.String val) = constField (T.unpack key)  (T.unpack val)
+    configField _ _ = mempty
 
 formatField :: String -> Context String
 formatField name = field name (return . fileFormat)

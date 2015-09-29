@@ -1,9 +1,9 @@
 /* TEAM */
 
-Author:      Samvel Truzyan
-Contact:     samvel .dot. truzyan @at@ google mail .dot. com
-Site:        pxqr.info
-Twitter:     @struzjan
+Author:      $author$
+Contact:     $email$
+Site:        $root$
+Twitter:     @$handle$
 From:        Russia
 
 /* SITE */
