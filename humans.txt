@@ -1,9 +1,9 @@
 /* TEAM */
 
-Author:      Sam Truzjan
-Contact:     pxqr .dot. sta @at@ gmail .dot. com
+Author:      Samvel Truzyan
+Contact:     samvel .dot. truzyan @at@ google mail .dot. com
 Site:        pxqr.info
-Twitter:     @pxqrd
+Twitter:     @struzjan
 From:        Russia
 
 /* SITE */
