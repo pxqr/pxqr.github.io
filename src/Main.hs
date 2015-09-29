@@ -45,52 +45,52 @@ main = hakyll $ do
     match "about.md" $ do
         route   $ setExtension "html"
         compile $ pandocCompilerWithTransform readerOptions writerOptions id
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/base.html" defaultContext
             >>= relativizeUrls
 
-    tags <- buildTags "posts/*" (fromCapture "tags/*.html")
+    tags <- buildTags "articles/*" (fromCapture "tags/*.html")
 
-    match "posts/*" $ do
+    match "articles/*" $ do
         route   $ setExtension "html"
         compile $ pandocCompilerWith readerOptions writerOptions
-            >>= loadAndApplyTemplate "templates/post.html"    (postCtx tags)
-            >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
+            >>= loadAndApplyTemplate "templates/article.html"    (articleCtx tags)
+            >>= loadAndApplyTemplate "templates/base.html" (articleCtx tags)
             >>= relativizeUrls
 
     tagsRules tags $ \ tag pattern -> do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll pattern
+            articles <- recentFirst =<< loadAll pattern
             makeItem ""
-              >>= loadAndApplyTemplate "templates/tags.html"    (tagsCtx posts tag tags)
-              >>= loadAndApplyTemplate "templates/default.html" (tagsCtx posts tag tags)
+              >>= loadAndApplyTemplate "templates/tags.html"    (tagsCtx articles tag tags)
+              >>= loadAndApplyTemplate "templates/base.html" (tagsCtx articles tag tags)
               >>= relativizeUrls
 
     create ["archive.html"] $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            articles <- recentFirst =<< loadAll "articles/*"
             let archiveCtx =
-                    listField "posts" (postCtx tags) (return posts) `mappend`
+                    listField "articles" (articleCtx tags) (return articles) `mappend`
                     constField "title" "Archives"                   `mappend`
                     defContext
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
+                >>= loadAndApplyTemplate "templates/base.html" archiveCtx
                 >>= relativizeUrls
 
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            articles <- recentFirst =<< loadAll "articles/*"
             let indexCtx =
-                    listField "posts" (postCtx tags) (return posts) `mappend`
+                    listField "articles" (articleCtx tags) (return articles) `mappend`
                     defContext
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/default.html" indexCtx
+                >>= loadAndApplyTemplate "templates/base.html" indexCtx
                 >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
@@ -98,16 +98,16 @@ main = hakyll $ do
     match "sitemap.xml" $ do
         route   idRoute
         compile $ do
-            posts <- loadAll "posts/*"
-            let sitemapCtx = listField "posts" (postCtx tags) (return posts) <>
+            articles <- loadAll "articles/*"
+            let sitemapCtx = listField "articles" (articleCtx tags) (return articles) <>
                              defContext
             getResourceBody >>= applyAsTemplate sitemapCtx
 
     create ["atom.xml"] $ do
         route idRoute
         compile $ do
-          posts <- fmap (take 10) . recentFirst =<< loadAll "posts/*"
-          renderAtom feedConfiguration (postCtx tags) posts
+          articles <- fmap (take 10) . recentFirst =<< loadAll "articles/*"
+          renderAtom feedConfiguration (articleCtx tags) articles
 
 readerOptions :: ReaderOptions
 readerOptions = defaultHakyllReaderOptions
@@ -117,15 +117,17 @@ readerOptions = defaultHakyllReaderOptions
 writerOptions :: WriterOptions
 writerOptions = defaultHakyllWriterOptions
 
-author, email, root :: String
-author = "Sam Truzjan"
-email  = "pxqr.sta@gmail.com"
-root   = "http://pxqr.info"
+author, email, host :: String
+author = "Samvel Truzyan"
+email  = "samveldottruzyanatgooogmail"
+host   = "pxqr.info"
+root   = "http://" ++ host
+
 
 feedConfiguration :: FeedConfiguration
 feedConfiguration = FeedConfiguration
-  { feedTitle       = "pxqr's blog"
-  , feedDescription = "Recent posts feed"
+  { feedTitle       = "Strange Dev Blog"
+  , feedDescription = "Articles feed"
   , feedAuthorName  = author
   , feedAuthorEmail = email
   , feedRoot        = root
@@ -156,6 +158,7 @@ headingsField = listField "headings" headingField getHeadings
 defContext :: Context String
 defContext =
     constField "root"   root `mappend`
+    constField "host"   host `mappend`
     defaultContext
 
 formatField :: String -> Context String
@@ -172,10 +175,10 @@ prettyTagsField name tags
     renderLink tag (Just filePath) = Just $
         H.a ! A.href (toValue $ toUrl filePath) ! A.title (toValue linkTitle) $ toHtml tag
       where
-        linkTitle = show postCount ++ " post" ++ suff ++ " tagged with " ++ tag
+        linkTitle = show articleCount ++ " article" ++ suff ++ " tagged with " ++ tag
           where
-            suff = if postCount == 1 then "" else "s"
-        Just postCount = fmap L.length $ L.lookup tag $ tagsMap tags
+            suff = if articleCount == 1 then "" else "s"
+        Just articleCount = fmap L.length $ L.lookup tag $ tagsMap tags
 
 -- | Average number of words the expected reader can read for a minute.
 wordsPerMinute :: Int
@@ -189,8 +192,8 @@ readingTimeField name = field name (return . readingTime)
                         (fromIntegral secs / fromIntegral wordsPerMinute :: Double)
                         :: Integer)
 
-postCtx :: Tags -> Context String
-postCtx tags =
+articleCtx :: Tags -> Context String
+articleCtx tags =
     formatField "format"             `mappend`
     dateField "date"     "%B %e, %Y" `mappend`
     dateField "datetime" "%Y-%m-%d"  `mappend` -- used by sitemap template
@@ -207,18 +210,18 @@ relatedCtx tag tags
   , constField "related-count" (show (L.length related))
   ]
   where
-    -- FIX: O(tag_count * tag_count * post_count)
+    -- FIX: O(tag_count * tag_count * article_count)
     -- may take a long time in the future
     related = L.map fst $ L.filter isRelated $ tagsMap tags
-    isRelated (oTag, oPosts)
-        = oTag /= tag && not (L.null (L.intersect oPosts posts))
+    isRelated (oTag, oArticles)
+        = oTag /= tag && not (L.null (L.intersect oArticles articles))
       where
-        Just posts = L.lookup tag $ tagsMap tags
+        Just articles = L.lookup tag $ tagsMap tags
 
 tagsCtx :: [Item String] -> String -> Tags -> Context String
-tagsCtx posts tag tags =
-    constField "title"   ("Posts tagged with " ++ tag)     `mappend`
+tagsCtx articles tag tags =
+    constField "title"   ("Articles tagged with " ++ tag)  `mappend`
     constField "topic"    tag                              `mappend`
-    listField  "posts"   (postCtx tags)  (return posts)    `mappend`
+    listField  "articles"   (articleCtx tags)  (return articles) `mappend`
     relatedCtx tag tags                                    `mappend`
     defaultContext

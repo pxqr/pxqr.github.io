@@ -18,7 +18,7 @@
     <priority>0.2</priority>
   </url>
 
-  $for(posts)$
+  $for(articles)$
   <url>
     <loc>$root$$url$</loc>
     <lastmod>
