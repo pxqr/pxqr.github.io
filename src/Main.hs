@@ -44,7 +44,7 @@ main = hakyll $ do
 
     match "about.md" $ do
         route   $ setExtension "html"
-        compile $ pandocCompilerWith readerOptions writerOptions
+        compile $ pandocCompilerWithTransform readerOptions writerOptions id
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
@@ -73,7 +73,7 @@ main = hakyll $ do
             let archiveCtx =
                     listField "posts" (postCtx tags) (return posts) `mappend`
                     constField "title" "Archives"                   `mappend`
-                    defaultContext
+                    defContext
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
@@ -86,7 +86,7 @@ main = hakyll $ do
             posts <- recentFirst =<< loadAll "posts/*"
             let indexCtx =
                     listField "posts" (postCtx tags) (return posts) `mappend`
-                    defaultContext
+                    defContext
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
