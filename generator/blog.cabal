@@ -4,37 +4,12 @@ synopsis:              pxqr's blog
 homepage:              https://github.com/pxqr/blog
 bug-reports:           https://github.com/pxqr/blog/issues
 license:               BSD3
-license-file:          src/LICENSE
-author:                Sam Truzjan
+license-file:          LICENSE
+author:                Samvel Truzyan
 maintainer:            pxqr.sta@gmail.com
 category:              Web
 build-type:            Simple
 cabal-version:         >= 1.8
-
-extra-source-files:
-  README.md
-  src/LICENSE
-
-  favicon.ico
-  favigen/README.md
-  favigen/grid.hs
-  favigen/lambda.hs
-  favigen/mkicon.sh
-
-  humans.txt
-  robots.txt
-  sitemap.xml
-
-  css/default.scss
-  index.html
-  about.md
-  images/.keep
-  posts/.keep
-  templates/archive.html
-  templates/default.html
-  templates/post-list.html
-  templates/post.html
-
 
 source-repository head
   type:                git
@@ -42,11 +17,10 @@ source-repository head
   branch:              master
 
 executable blog
-  hs-source-dirs:      src
   main-is:             Main.hs
   ghc-options:         -Wall
   build-depends:       base       >= 4.5
                      , blaze-html
                      , pandoc-types
                      , pandoc
-                     , hakyll == 4.5.4
+                     , hakyll
