@@ -10,60 +10,63 @@ import           Text.Pandoc.Options
 import           Text.Pandoc.Walk
 import           Hakyll as H
 
+articlesGlob :: Pattern
+articlesGlob = "content/articles/*"
+
 main :: IO ()
 main = hakyll $ do
-    match (H.fromList ["humans.txt", "robots.txt", "opensearch.xml"]) $ do
-        route   idRoute
-        compile $ getResourceBody >>= applyAsTemplate defContext
+    -- Assets
+    match "assets/favicon.ico" $ do
+        route $ constRoute "favicon.ico"
+        compile copyFileCompiler
 
-    match "favicon.ico" $ do
+    match "assets/img/*" $ do
         route   idRoute
         compile copyFileCompiler
 
-    match "img/*" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    match "images/*" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    match "css/*.css" $ do
+    match "assets/css/*.css" $ do
         route   idRoute
         compile compressCssCompiler
 
-    match "css/*.scss" $ do
+    match "assets/css/*.scss" $ do
         route $ setExtension "css"
         compile $ getResourceString
               >>= withItemBody (unixFilter "sass" ["-s", "--scss"])
               >>= return . fmap compressCss
 
-    match "404.html" $ do
+    -- Content Pages
+    match "content/images/*" $ do
         route   idRoute
-        compile $ getResourceBody >>= applyAsTemplate defContext
+        compile copyFileCompiler
 
-    tags <- buildTags "articles/*" (fromCapture "tags/*.html")
+    tags <- buildTags articlesGlob (fromCapture "tags/*.html")
+    match "templates/*" $ compile templateCompiler
 
-    match "articles/*" $ do
-        route   $ setExtension "html"
+    match articlesGlob $ do
+        route   $ gsubRoute "content/" (const "") `composeRoutes` setExtension "html"
         compile $ pandocCompilerWith readerOptions writerOptions
             >>= loadAndApplyTemplate "templates/article.html"    (articleCtx tags)
             >>= loadAndApplyTemplate "templates/base.html" (articleCtx tags)
             >>= relativizeUrls
 
-    tagsRules tags $ \ tag pattern -> do
-        route idRoute
+    -- Index Pages
+    match "pages/index.html" $ do
+        route $ constRoute "index.html"
         compile $ do
-            articles <- recentFirst =<< loadAll pattern
-            makeItem ""
-              >>= loadAndApplyTemplate "templates/tags.html"    (tagsCtx articles tag tags)
-              >>= loadAndApplyTemplate "templates/base.html" (tagsCtx articles tag tags)
-              >>= relativizeUrls
+            articles <- recentFirst =<< loadAll articlesGlob
+            let indexCtx =
+                    listField "articles" (articleCtx tags) (return articles) `mappend`
+                    defContext
+
+            getResourceBody
+                >>= applyAsTemplate indexCtx
+                >>= loadAndApplyTemplate "templates/base.html" indexCtx
+                >>= relativizeUrls
 
     create ["archive.html"] $ do
         route idRoute
         compile $ do
-            articles <- recentFirst =<< loadAll "articles/*"
+            articles <- recentFirst =<< loadAll articlesGlob
             let archiveCtx =
                     listField "articles" (articleCtx tags) (return articles) `mappend`
                     constField "title" "Archives"                   `mappend`
@@ -74,25 +77,29 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/base.html" archiveCtx
                 >>= relativizeUrls
 
-    match "index.html" $ do
-        route idRoute
+    tagsRules tags $ \ tag pattern -> do
+        route $ idRoute
         compile $ do
-            articles <- recentFirst =<< loadAll "articles/*"
-            let indexCtx =
-                    listField "articles" (articleCtx tags) (return articles) `mappend`
-                    defContext
+            articles <- recentFirst =<< loadAll pattern
+            makeItem ""
+              >>= loadAndApplyTemplate "templates/tags.html"    (tagsCtx articles tag tags)
+              >>= loadAndApplyTemplate "templates/base.html" (tagsCtx articles tag tags)
+              >>= relativizeUrls
 
-            getResourceBody
-                >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/base.html" indexCtx
-                >>= relativizeUrls
+    -- Error pages
+    match "pages/404.html" $ do
+        route $ constRoute "404.html"
+        compile $ getResourceBody >>= applyAsTemplate defContext
 
-    match "templates/*" $ compile templateCompiler
+    -- Metadata
+    match (H.fromList ["meta/humans.txt", "meta/robots.txt", "meta/opensearch.xml"]) $ do
+        route $ gsubRoute "meta/" (const "")
+        compile $ getResourceBody >>= applyAsTemplate defContext
 
-    match "sitemap.xml" $ do
-        route   idRoute
+    match "meta/sitemap.xml" $ do
+        route $ constRoute "sitemap.xml"
         compile $ do
-            articles <- loadAll "articles/*"
+            articles <- loadAll articlesGlob
             let sitemapCtx = listField "articles" (articleCtx tags) (return articles) <>
                              defContext
             getResourceBody >>= applyAsTemplate sitemapCtx
@@ -100,7 +107,7 @@ main = hakyll $ do
     create ["atom.xml"] $ do
         route idRoute
         compile $ do
-          articles <- fmap (take 10) . recentFirst =<< loadAll "articles/*"
+          articles <- fmap (take 10) . recentFirst =<< loadAll articlesGlob
           renderAtom feedConfiguration (articleCtx tags) articles
 
 readerOptions :: ReaderOptions
