@@ -13,7 +13,7 @@ env:
 install:
   - sudo apt-get install rubygems && gem install sass
   - cd generator
-  - cabal install --only-dependencies --max-backjumps=-1
+  - cabal install --force-reinstalls --only-dependencies --max-backjumps=-1
   - cabal configure && cabal build && cabal install
   - cd ..
 
