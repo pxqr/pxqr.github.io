@@ -44,7 +44,7 @@ main = hakyll $ do
 
     -- Content Pages
     match "content/images/*" $ do
-        route   idRoute
+        route $ gsubRoute "content/" (const "")
         compile copyFileCompiler
 
     tags <- buildTags articlesGlob (fromCapture "tags/*.html")
