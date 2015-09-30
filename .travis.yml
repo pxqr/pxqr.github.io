@@ -12,8 +12,10 @@ env:
 
 install:
   - sudo apt-get install rubygems && gem install sass
+  - cd generator
   - cabal install --only-dependencies --max-backjumps=-1
   - cabal configure && cabal build && cabal install
+  - cd ..
 
 before_script:
   - cd _site
