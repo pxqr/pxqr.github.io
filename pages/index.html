@@ -3,7 +3,28 @@ title: Latest Articles
 ---
 
 <div class="container">
-  <h1>Recent</h1>
-  $partial("templates/article-list.html")$
-  <p>…more in the <a href="/archive.html">archives<a/>.</p>
+<!--
+  <header class="page-header">
+    <h1>$name$</h1>
+  </header>
+  <h2>Featured</h2>
+  <div class="row">
+
+  </div>
+  -->
+
+  <h2>Recent</h2>
+  <div class="row">
+    $for(articles)$
+    <div class="col-md-4 col-sm-6">
+      $partial("templates/article-preview.html")$
+    </div>
+    $endfor$
+  </div>
+
+  <div class="row">
+    <p>
+      …more in the <a href="/archive.html">archives<a/>.
+    </p>
+  </div>
 </div>

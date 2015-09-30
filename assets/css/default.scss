@@ -6,3 +6,46 @@
     -o-user-select: none;
     user-select: none;
 }
+
+/* article */
+/* $article-preview-hover: #eee; */
+
+.article-preview {
+    transition: all 0.2s ease 0.05s;
+  /*  border: 1px solid rgba(255, 255, 255, 0.1); */
+
+    * {
+        transition: inherit;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    section {
+    }
+}
+
+.article-preview:hover {
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.6);
+
+    header {
+
+    }
+    img {
+        opacity: 0.80;
+    }
+    section {
+        opacity: 0.75;
+    }
+    footer {
+
+    }
+}
+
+.article-preview:active {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    img {
+        opacity: 0.95;
+    }
+}

@@ -1,0 +1,31 @@
+<article
+    $if(state)$
+    class="article-preview panel panel-$state$"
+    $else$
+    class="article-preview panel panel-default"
+    $endif$
+    onclick="location.href='$url$';"
+    style="cursor: pointer"
+>
+    <header class="panel-heading">
+        <small>$date$</small>
+        <small class="pull-right">$readingtime$ min.</small>
+    </header>
+    $if(preview)$
+    <img src="$preview$" class="img-responsive img-preview"/>
+    $endif$
+    <section class="panel-body">
+        <h3>$title$</h3>
+        <p class="lead">$description$</p>
+    </section>
+    <footer class="panel-footer">
+        $if(tags)$
+        <i class="fa fa-tags"></i>
+        <span class="sr-only">Tags: </span>
+        $taglist$
+        $endif$
+        <a href="$url$" class="btn btn-xs btn-primary pull-right">
+            <strong>Read...</strong>
+        </a>
+    </footer>
+</article>
