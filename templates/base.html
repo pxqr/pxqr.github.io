@@ -7,7 +7,11 @@
         $if(author)$
         <meta name="author"    content="$author$">
         $endif$
-        <meta name="keywords"  content="blog, programming">
+        $if(tags)$
+        <meta name="keywords"  content="$tags$">
+        $else$
+        <meta name="keywords"  content="blog, development, programming">
+        $endif$
         <meta name="generator" content="Hakyll">
         $if(description)$
         <meta name="description" content="$description$">
