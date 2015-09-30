@@ -1,4 +1,5 @@
 name =          "Strange Dev Blog"
+brand =         "StrangeDev"
 host =          "pxqr.info"
 root =          "http://pxqr.info"
 author =        "Samvel Truzyan"
