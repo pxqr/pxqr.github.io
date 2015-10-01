@@ -2,8 +2,8 @@
     <header class="page-header">
         <h1>$title$</h1>
     </header>
-    <article id="content" class="panel panel-default">
-        <header class="panel-heading">
+    <article id="article"" class="panel panel-default">
+        <header id="article-metadata" class="panel-heading">
             <span>
                 $date$
                 $if(author)$
@@ -28,44 +28,32 @@
         </section>
         $endif$
 
-        <section class="panel-body">
-            <!--    <link rel="stylesheet" type="text/css"
-            href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css"/>
-            -->
+        <section id="article-content" class="panel-body">
+            <link rel="stylesheet" type="text/css"
+                  href="//rawgithub.com/jgm/highlighting-kate/master/css/hk-kate.css"/>
             $body$
+            $if(mathjax)$
+            <script type="text/javascript"
+                    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+            </script>
+            $endif$
         </section>
 
-        <footer class="panel-footer">
+        <footer id="article-links" class="panel-footer">
             <span class="tags">
                 $if(tags)$
                 <i class="fa fa-tags"></i> $taglist$
                 $endif$
             </span>
 
-            <span id="actions" class="pull-right">
-                <!-- refine order -->
-                <span id="source" class="hidden-phone">
-                    <i class="fa fa-file-code-o"></i>
-                    <a href="https://github.com/pxqr/pxqr.github.io/blob/source/$path$"
-                       title="Source code for this article in $format$ format"
-                       target="_blank">Source</a>
-                </span>
-                <span id="edit">
-                    <span class="fa fa-code-fork"></span>
-                    <a href="#" data-toggle="tooltip" data-placement="left" title="Edit article">
-                        Edit
-                    </a>
-                </span>
+            <span id="source" class="pull-right hidden-phone">
+                <i class="fa fa-file-code-o"></i>
+                <a href="https://github.com/pxqr/pxqr.github.io/blob/source/$path$"
+                   title="Source code for this article in $format$ format"
+                   target="_blank">Source Code</a>
             </span>
         </footer>
-
-        $if(mathjax)$
-        <script type="text/javascript"
-                src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-        </script>
-        $endif$
     </article>
-
 
     <nav id="pager">
         <ul class="pager">
@@ -87,18 +75,43 @@
         </ul>
     </nav>
 
-    <footer>
-        <section id="comments" class="panel panel-default">
-            <div id="disqus_thread" class="panel-body"></div>
-            <script type="text/javascript">
-             var disqus_shortname = 'pxqr';
-             (function() {
-                 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                 dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-             })();
-            </script>
-            <noscript>Please enable JavaScript to view the comments</noscript>
+    <footer id="actions" class="panel panel-default">
+        <header class="panel-heading">
+            <nav>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a role="tab" data-toggle="tab"
+                           aria-controls="comments" href="#discussion">Discuss</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="tab" data-toggle="tab"
+                           aria-controls="article-share-panel" href="#share">Share</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="tab" data-toggle="tab"
+                           aria-controls="edit" href="#edit">Edit</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="panel-body">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="discussion">
+                    $partial("templates/article-discussion.html")$
+                </div>
+                <div role="tabpanel" class="tab-pane" id="share">
+                    <span class="fa fa-share-alt"></span>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="edit">
+                    <span id="edit">
+                        <span class="fa fa-code-fork"></span>
+                        <a href="#" data-toggle="tooltip" data-placement="left" title="Edit article">
+                            Edit
+                        </a>
+                    </span>
+                </div>
+            </div>
         </section>
     </footer>
 </div>
