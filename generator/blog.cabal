@@ -1,8 +1,8 @@
 name:                  blog
 version:               0.1.0.0
 synopsis:              pxqr's blog
-homepage:              https://github.com/pxqr/blog
-bug-reports:           https://github.com/pxqr/blog/issues
+homepage:              https://github.com/pxqr/pxqr.github.io
+bug-reports:           https://github.com/pxqr/pxqr.github.io/issues
 license:               BSD3
 license-file:          LICENSE
 author:                Samvel Truzyan
