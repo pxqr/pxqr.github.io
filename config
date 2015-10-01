@@ -5,3 +5,5 @@ root =          "http://pxqr.info"
 author =        "Samvel Truzyan"
 email =         "samveldottruzyanatgooogmail"
 handle =        "struzjan"
+
+disqusShortName = "pxqr"
