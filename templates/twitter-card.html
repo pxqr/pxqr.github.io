@@ -1,3 +1,4 @@
+$if(description)$
 $if(preview)$
 <meta name="twitter:card" content="summary_large_image">
 $else$
@@ -5,7 +6,6 @@ $else$
 $endif$
 
 <meta name="twitter:site" content="@$handle$">
-
 $if(twitterid)$
 <meta name="twitter:creator" content="@$twitterid$">
 $else$
@@ -13,10 +13,8 @@ $else$
 $endif$
 
 <meta name="twitter:title" content="$title$">
-$if(description)$
 <meta name="twitter:description" content="$description$">
-$else$
-$endif$
 $if(preview)$
 <meta name="twitter:image" content="$root$$preview$">
+$endif$
 $endif$
