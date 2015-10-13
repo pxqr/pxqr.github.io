@@ -1,98 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
+    <head>
+        <meta charset="utf-8">
+        <title>Latest Articles - Strange Dev Blog</title>
+
+        
+        <meta name="author" content="Samvel Truzyan">
+        
+        
+        <meta name="keywords" content="blog, development, programming">
+        
+        <meta name="generator" content="Hakyll">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="search" type="application/opensearchdescription+xml" href="./opensearch.xml" title="Strange Dev Blog">
+        <link rel="icon" href="./favicon.ico">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/paper/bootstrap.min.css">
+        <link rel="stylesheet" href="./assets/css/default.css">
+
+        <link rel="alternate" href="./atom.xml" type="application/atom+xml" title="Articles feed">
+        <link rel="author" href="./humans.txt">
+        <link rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+
+        
+
+        
+
+        <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+         ga('create', 'UA-52438115-1', 'auto');
+         ga('require', 'displayfeatures');
+         ga('send', 'pageview');
+        </script>
+    </head>
+    <body>
+        <header id="base-header">
+        </header>
+        <nav id="base-nav" class="navbar navbar-default no-select">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="./" title="Starting page">StrangeDev</a>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-items" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div id="navbar-items" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="./archive.html" title="List of all articles">Archive</a></li>
+                        <li>
+                            <a href="./atom.xml" title="Subscribe for new articles">
+                                <span class="fa fa-rss fa-lg"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main id="content">
+            <div class="container">
+<!--
+  <header class="page-header">
+    <h1>Strange Dev Blog</h1>
+  </header>
+  <h2>Featured</h2>
+  <div class="row">
+
+  </div>
+  -->
+
+  <h2>Recent</h2>
+  <div class="row">
     
-    <meta name="keywords" content="blog, programming">
-    <meta name="generator" content="Hakyll">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Home - pxqr's blog</title>
-
-    <link rel="search" type="application/opensearchdescription+xml" href="./opensearch.xml" title="pxqr's blog">
-    <link rel="icon" href="./favicon.ico">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/default.css">
-    <link rel="alternate" href="./atom.xml" type="application/atom+xml" title="Feed of all posts">
-    <link rel="author" href="./humans.txt">
-    <link rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-
-    
-
-    
-
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-52438115-1', 'auto');
-      ga('require', 'displayfeatures');
-      ga('send', 'pageview');
-    </script>
-  </head>
-
-  <body>
-    <header>
+    <div class="col-md-4 col-sm-6">
+      <article class="article-preview panel panel-primary" onclick="location.href='/articles/2014-09-08-harris-corner-detector.html';" style="cursor: pointer">
+    <header class="panel-heading">
+        <small>September  8, 2014</small>
+        <small class="pull-right">11 min.</small>
     </header>
-    <nav class="global">
-      <ul>
-        <li><a href="./" title="Starting page">Home</a></li>
-        <li><a href="./archive.html" title="List of all blog posts">Archive/</a></li>
-        <li><a href="./about.html" title="About this site">About</a></li>
-        <li>
-          <a href="./atom.xml" title="Subscribe to new posts">
-            <span class="fa fa-rss fa-lg"></span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-
-    <section id="content">
-      <img class="banner" src="./img/banner.bmp" alt="Spheres cloud" width="600" height="80">
-
-<h1>Recent posts</h1>
-
-<table class="posts">
-  
-  <tr>
-    <td><a href="./posts/2014-09-08-harris-corner-detector.html" title="Implementation of the harris corner detection algorithm using Haskell.">Harris corner detector</a></td>
-    <td class="visible-desktop">
-      
-        <i class="fa fa-tags"></i>
-        <a href="./tags/CV.html" title="1 post tagged with CV">CV</a>, <a href="./tags/Repa.html" title="1 post tagged with Repa">Repa</a>, <a href="./tags/draft.html" title="1 post tagged with draft">draft</a>
-      
-    </td>
-    <td align="right">September  8, 2014</td>
-  </tr>
-  
-  <tr>
-    <td><a href="./posts/2014-06-10-adding-post-navigation.html" title="How to generate table of contents for Hakyll blog posts.">Adding Table Of Contents</a></td>
-    <td class="visible-desktop">
-      
-        <i class="fa fa-tags"></i>
-        <a href="./tags/Hakyll.html" title="1 post tagged with Hakyll">Hakyll</a>, <a href="./tags/Pandoc.html" title="1 post tagged with Pandoc">Pandoc</a>
-      
-    </td>
-    <td align="right">June 10, 2014</td>
-  </tr>
-  
-</table>
-
-
-…more in the <a href="./archive.html">archives<a></a>.
-
+    
+    <img src="./images/harris-corners.bmp" class="img-responsive img-preview" />
+    
+    <section class="panel-body">
+        <h3>Harris Corner Detector</h3>
+        <p class="lead">Implementation of the harris corner detection algorithm using Haskell.</p>
     </section>
-
-    <footer class="global">
-      Built with
-      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
-      &
-      <a href="http://johnmacfarlane.net/pandoc">Pandoc</a>.
-      Hosted by
-      <a href="https://github.com/pxqr/pxqr.github.io/">GitHub</a>.
+    <footer class="panel-footer">
+        
+        <i class="fa fa-tags"></i>
+        <span class="sr-only">Tags: </span>
+        <a href="./tags/CV.html" title="1 article tagged with CV">CV</a>, <a href="./tags/Repa.html" title="1 article tagged with Repa">Repa</a>, <a href="./tags/draft.html" title="1 article tagged with draft">draft</a>
+        
+        <a href="./articles/2014-09-08-harris-corner-detector.html" class="btn btn-xs btn-primary pull-right">
+            <strong>Read...</strong>
+        </a>
     </footer>
-  </body>
+</article>
+
+    </div>
+    
+    <div class="col-md-4 col-sm-6">
+      <article class="article-preview panel panel-info" onclick="location.href='/articles/2014-06-10-adding-post-navigation.html';" style="cursor: pointer">
+    <header class="panel-heading">
+        <small>June 10, 2014</small>
+        <small class="pull-right">5 min.</small>
+    </header>
+    
+    <section class="panel-body">
+        <h3>Adding Table of Contents</h3>
+        <p class="lead">How to generate table of contents for Hakyll blog posts.</p>
+    </section>
+    <footer class="panel-footer">
+        
+        <i class="fa fa-tags"></i>
+        <span class="sr-only">Tags: </span>
+        <a href="./tags/Hakyll.html" title="1 article tagged with Hakyll">Hakyll</a>, <a href="./tags/Pandoc.html" title="1 article tagged with Pandoc">Pandoc</a>
+        
+        <a href="./articles/2014-06-10-adding-post-navigation.html" class="btn btn-xs btn-primary pull-right">
+            <strong>Read...</strong>
+        </a>
+    </footer>
+</article>
+
+    </div>
+    
+  </div>
+
+  <div class="row">
+    <p>
+      …more in the <a href="./archive.html">archives<a></a>.
+    </p>
+  </div>
+</div>
+
+        </main>
+
+        <footer id="base-footer" class="container">
+            <footer class="row">
+                <div class="col-md-12">
+                    <section id="credits" class="text-center">
+                        <nobr>Built with
+                            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+                            ,
+                            <a href="http://johnmacfarlane.net/pandoc">Pandoc</a>
+                            and
+                            <a href="./humans.txt">other tools</a>.
+                        </nobr>
+                        <nobr>
+                            Hosted by
+                            <a href="https://github.com/pxqr/pxqr.github.io/">GitHub</a>.
+                        </nobr>
+                    </section>
+                    <section id="copyright" class="text-center">
+                        <p>Copyright
+                            <span class="fa fa-copyright"></span>
+                            <span class="sr-only">&copy;</span>
+                            2014-<script>document.write(new Date().getFullYear());</script>
+                            StrangeDev
+                        </p>
+                    </section>
+                </div>
+            </footer>
+        </footer>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </body>
 </html>

@@ -4,16 +4,15 @@ branches:
     - source
 
 ghc:
-  - 7.6
-
-env:
-  global:
-    secure: ckqqllg7rXLOGKa3lqk3FqrEpSPbyYRrbtQUMAKgj1ZU1IJ7k6RXwZfcIzBbu8Iqv4F0rRSB1oPxzond2R4N0XjLjEmZZtCEDctXX7vm+BB7CZLWGEYYGLwVz7dAs9027IEc4KIVt7EVOpSocuTOMZq81hO7IWJTP0UwanINaxM=
+  - 7.8
 
 install:
   - sudo apt-get install rubygems && gem install sass
-  - cabal install --only-dependencies --max-backjumps=-1
+  - cabal install alex happy
+  - cd generator
+  - cabal install --force-reinstalls --only-dependencies --max-backjumps=-1
   - cabal configure && cabal build && cabal install
+  - cd ..
 
 before_script:
   - cd _site
@@ -29,8 +28,8 @@ after_success:
   - cd _site
   - git status
   - git add --all
-  - git config --global user.email "pxqr.sta@gmail.com"
-  - git config --global user.name "Travis"
-  - git commit -m "deploy snapshot $(date '+%m/%d/%y %H:%M')"
-  - git push "$REPO_URL" master &> /dev/null || echo push failed
+  - git config user.email "$GIT_NAME"
+  - git config user.name "$GIT_EMAIL"
+  - git commit -m "Deploy snapshot - $(date '+%m/%d/%y %H:%M')"
+  - git push --force "https://${GH_TOKEN}@github.com/pxqr/pxqr.github.io.git" master &> /dev/null || echo push failed
   - cd ..

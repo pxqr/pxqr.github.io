@@ -1,15 +1,15 @@
 /* TEAM */
 
-Author:      Sam Truzjan
-Contact:     pxqr .dot. sta @at@ gmail .dot. com
-Site:        pxqr.info
-Twitter:     @pxqrd
+Author:      Samvel Truzyan
+Contact:     samveldottruzyanatgooogmail
+Site:        http://pxqr.info
+Twitter:     @struzjan
 From:        Russia
 
 /* SITE */
 
 Language:    English
 Standards:   HTML5, CSS3, Atom
-Components:  MathJax
+Components:  MathJax, Bootstrap
 Software:    GHC, Cabal, Pandoc, SASS, Hakyll
 IDE:         Emacs
