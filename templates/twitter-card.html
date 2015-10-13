@@ -1,0 +1,23 @@
+$if(preview)$
+<meta name="twitter:card" content="summary_large_image">
+$else$
+<meta name="twitter:card" content="summary">
+$endif$
+
+<meta name="twitter:site" content="@$handle$">
+
+$if(twitterid)$
+<meta name="twitter:creator" content="@$twitterid$">
+$else$
+<meta name="twitter:creator" content="@$handle$">
+$endif$
+
+<meta name="twitter:title" content="$title$">
+$if(description)$
+<meta name="twitter:description" content="$description$">
+$else$
+$endif$
+$endif$
+$if(preview)$
+<meta name="twitter:image" content="$preview$">
+$endif$
