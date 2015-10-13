@@ -26,5 +26,5 @@ executable blog
 
                      , blaze-html
                      , pandoc-types
-                     , pandoc
+                     , pandoc == 1.12.*
                      , hakyll == 4.5.*
