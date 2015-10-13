@@ -35,5 +35,5 @@ after_success:
   - git config --global user.email "pxqr.sta@gmail.com"
   - git config --global user.name "Travis"
   - git commit -m "deploy snapshot $(date '+%m/%d/%y %H:%M')"
-  - git push "$REPO_URL" master &> /dev/null || echo push failed
+  - git push --force "$REPO_URL" master &> /dev/null || echo push failed
   - cd ..
