@@ -55,25 +55,7 @@
         </footer>
     </article>
 
-    <nav id="pager">
-        <ul class="pager">
-            $if(prev)$
-            <li class="previous">
-                <a href="/articles/$prev$.html" title="Go to $prev$">← Previous</a>
-            </li>
-            $endif$
-
-            <li>
-                <a rel="directory" href="/archive.html" title="Go to Archive">Back</a>
-            </li>
-
-            $if(next)$
-            <li class="next">
-                <a href="/articles/$next$.html" title="Go to $next$">Next →</a>
-            </li>
-            $endif$
-        </ul>
-    </nav>
+    $partial("templates/article-pager.html")$
 
     <footer id="actions" class="panel panel-default">
         <header class="panel-heading">

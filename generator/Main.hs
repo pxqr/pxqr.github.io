@@ -15,6 +15,8 @@ import qualified Data.HashMap.Strict as HM
 import qualified Data.Text as T
 import           System.IO.Unsafe (unsafePerformIO)
 
+import Pager
+
 articlesGlob :: Pattern
 articlesGlob = "content/articles/*"
 
@@ -52,9 +54,10 @@ main = hakyll $ do
 
     match articlesGlob $ do
         route   $ gsubRoute "content/" (const "") `composeRoutes` setExtension "html"
+        let isArticleField = constField "isArticle" "yes"
         compile $ pandocCompilerWith readerOptions writerOptions
             >>= loadAndApplyTemplate "templates/article.html"    (articleCtx tags)
-            >>= loadAndApplyTemplate "templates/base.html" (articleCtx tags)
+            >>= loadAndApplyTemplate "templates/base.html" (articleCtx tags <> isArticleField)
             >>= relativizeUrls
 
     -- Index Pages
@@ -211,6 +214,7 @@ articleCtx tags =
     prettyTagsField "taglist" tags   `mappend`
     readingTimeField "readingtime"   `mappend`
     headingsField                    `mappend`
+    pagerCtx                         `mappend`
     defContext
 
 relatedCtx :: String -> Tags -> Context String

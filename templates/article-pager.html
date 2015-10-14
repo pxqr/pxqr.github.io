@@ -1,0 +1,51 @@
+<nav id="pager">
+    <ul class="pager">
+        $if(older)$
+        <li class="previous">
+            <a href="$older$" title="Previous article">
+                <span aria-hidden="true">&larr;</span>
+                <span class="lead">$olderTitle$</span>
+            </a>
+        </li>
+        $endif$
+
+        $if(prev)$
+        <li>
+            <a href="/articles/$prev$.html" rel="prev" title="Previous in series">
+                <span aria-hidden="true">&laquo;</span>
+                <span>Previous</span>
+            </a>
+        </li>
+        $endif$
+
+        $if(prev)$
+        $else$
+        $if(next)$
+        $else$
+        <li>
+            <a rel="directory" href="/archive.html" title="All articles">
+                <span>Archive</span>
+            </a>
+        </li>
+        $endif$
+        $endif$
+
+        $if(next)$
+        <li>
+            <a href="/articles/$next$.html" rel="next" title="Next in series">
+                <span>Next</span>
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        $endif$
+
+        $if(newer)$
+        <li class="next">
+            <a href="$newer$" title="Next article">
+                <span class="lead">$newerTitle$</span>
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+        </li>
+        $endif$
+    </ul>
+</nav>

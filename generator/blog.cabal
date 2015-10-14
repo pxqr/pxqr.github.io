@@ -18,6 +18,7 @@ source-repository head
 
 executable blog
   main-is:             Main.hs
+  other-modules:       Pager
   ghc-options:         -Wall
   build-depends:       base       >= 4.5
                      , unordered-containers

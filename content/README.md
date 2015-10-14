@@ -16,3 +16,5 @@ Exhaustive list of metadata field.
 | toc          | Bool     | No       | Render table of contents if present
 | mathjax      | Bool     | No       | Render math expressions if present
 | state        | Enum     | No       | Values: primary, success, info, warning, danger
+| prev         | Filename | No       | Previous article, if related
+| next         | Filename | No       | Next article, if related
