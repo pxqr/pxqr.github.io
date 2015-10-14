@@ -1,0 +1,31 @@
+<meta property="og:site_name" content="$name$"/>
+$if(isArticle)$
+<meta property="og:type" content="article"/>
+$else$
+<meta property="og:type" content="website"/>
+$endif$
+<meta property="og:title" content="$title$"/>
+$if(description)$
+<meta property="og:description" content="$description$"/>
+$endif$
+<meta property="og:url" content="$root$$url$"/>
+$if(preview)$
+<meta property="og:image" content="$root$$preview$"/>
+$endif$
+
+$if(isArticle)$
+<meta property="article:author" content="$author$"/>
+<!-- TODO <meta property="article:published_time" content="$datetime$"/> -->
+$if(category)$
+<meta property="article:section" content="$category$"/>
+$endif$
+$if(referenced)$
+<meta property="og:referenced" content="$referenced$"/>
+$endif$
+$if(prev)$
+<meta property="og:see_also" content="/articles/$prev$.html"/>
+$endif$
+$if(next)$
+<meta property="og:see_also" content="/articles/$next$.html"/>
+$endif$
+$endif$
